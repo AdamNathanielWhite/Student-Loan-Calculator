@@ -1,0 +1,9 @@
+{
+  "name": "Student-Loan-Calculator",
+  "version": "0.1.0",
+  "description": "A student loan financial calculator",
+  "author": "Adam Nathaniel White <adam.nathaniel.white@gmail.com>",
+  "dependencies": {
+    "express": "3.x.x"
+  }
+}
