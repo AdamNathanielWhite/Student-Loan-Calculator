@@ -1,0 +1,30 @@
+GENERAL INFORMATION
+I am currently on the ____IBR____ plan which is scheduled to be completed on MM / YYYY.
+Income, or expected income
+I reside in this state: [Lower 48/Alaska/Hawaii]
+Based on my career, I am eligible to receive [no/full/partial] forgiveness after [na/x] years.
+Extra monthly payment above the minimums (radio buttons, see wireframes)
+I am considering this refinance option: Amount, time period, interest rate
+Using autopay (checkbox)
+Pay off loans in this order: [snowball/avalance/highest rate first]
+Switch to this repayment plan: [7 options]
+Submit
+
+
+
+
+INPUT LOAN
+Loan amount
+Interest rate
+Submit
+
+
+
+
+GUI
+Amortization graph
+Payment adjustment graph
+Total of payments
+Date of payoff
+Paying an extra $100 each month would save you $xx and xx months.
+"Canned text" section and external links
