@@ -1,2 +1,7 @@
 Senior Design documents and essays/~$NAL DESIGN DIAGRAMS.docx
 */node_modules/*
+PROJECT/.settings
+PROJECT/.project
+PROJECT/.settings/*
+PROJECT/.jshintrc
+PROJECT/.npmignore
