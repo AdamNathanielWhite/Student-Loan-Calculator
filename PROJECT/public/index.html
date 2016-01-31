@@ -1,21 +1,156 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Simple Calculator</title>
+		<title>Student Loan Calculator</title>
 		
 	</head>
 	<body>
-		<form>
-			<input type="text" name="first" id="first">
-			+
-			<input type="text" name="second" id="second">
-			=
-			<output name="result" id="result">0</output>
+		<div>
+			<form>
+				I am currently on the 
+				<select name="planType" id="planType">
+					<option value="volvo">Volvo</option>
+					<option value="saab">Saab</option>
+					<option value="fiat">Fiat</option>
+					<option value="audi">Audi</option>
+				</select>
+				plan, which is scheduled to be completed on 
+				<select name="completedMonth" id="completedMonth">
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>
+				<br />
+				
+				My income or expected future income is
+				<input type="text" name="income" id="income"></input>
+				<br />
+				
+				I reside in this state
+				<select name="stateResidency" id="stateResidency">
+					<option value="Lower48">Lower 48</option>
+					<option value="Hawaii">Hawaii</option>
+					<option value="Alaska">Alaska</option>
+				</select>
+				<br />
+				
+				Based on my career, I am eligible to receive forgiveness after 
+				<select name="forgivenessYears" id="forgivenessYears">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+				<br />
+				
+				Extra monthly payment above the minimums
+				<fieldset id="extraPaymentGroup">
+			        <input type="radio" value="">Minimum payments only</input><br />
+			        <input type="radio" value="">Extra monthly payment of
+			        	<input type="text" name="extraMonthlyPayment" id="extraMonthlyPayment">0</input>
+			        </input><br />
+			        <input type="radio" value="">Custom (see graph below)</input>
+			    </fieldset>
+				<br />
+				
+				I am considering this refinance option:
+				<fieldset id="refinanceGroup">
+					Amount $
+					<input type="text" value="0" name="refinanceAmount" id="refinanceAmount"></input><br />
+					Number of years
+					<input type="text" name="nYearsRefinance" id="nYearsRefinance"></input><br />
+					Interest rate
+					<input type="text" name="refinanceInterestRate" id="refinanceInterestRate"></input>
+				</fieldset>
+				<br />
+				
+				<input type="checkbox" name="usingAutopay" id="usingAutopay">
+				Using autopay</input>
+				<br />
+				
+				Pay off loans in this order
+				<select name="payOffOrder" id="payOffOrder">
+					<option value="snowball">Snowball</option>
+					<option value="avalanche">Avalanche</option>
+					<option value="highestRate">Highest rate first</option>
+				</select>
+				<br />
+				
+				I am considering switching to the
+				<select name="newRepaymentPlan" id="newRepaymentPlan">
+					[[copy from repayment plans above]]
+				</select>
+				repayment plan
+				<br />
+				
+				<button type="button" name="submitButton" id="submitButton">Submit</button>
+				<br />
+			</form>
+		</div>
 			
-			<br />
-			<button type="button" name="button" id="button">Go</button>
-		</form>
+		<div>
+			<!-- This following div needs to be repeated for each loan -->
+			<div>
+				<div>
+					Loan amount
+					<input type="text" id="loanAmoun"></input>
+				</div>
+				<div>
+					Interest rate
+					<input type="text" id="interestRate"></input>
+				</div>
+				<div>
+					<button type="button" name="submitLoanButton" id="submitLoanButton">Enter</button>
+				</div>
+			</div>
+			<!-- Insert more loan input divs here -->
+			
+		</div>
 		
+		<div>
+			(Amortization graph here)
+			<br />
+			
+			(payment adjustment graph here)
+			<br />
+			<br />
+			
+			<div id="summary" class="summary">
+				Under this plan, all loans will be paid by
+				<output id="loanPayoffDateOutput"></output>
+				<br />
+				and your total of payments will be
+				<output id="totalOfPaymentsOutput"></output>
+			</div>
+			<br />
+			<div id="extraPayoffText" class="extraPayoffText">
+				Paying an extra $100 per month will save you $ 
+				<output id="extraHundredAmountSavedOutput"></output> 
+				and 
+				<output id="extraHundredMonthsSavedOutput"></output> 
+				months
+			</div>
+		</div>
+		
+		<div id="footer" class="footer">
+			[[Canned text footer]]
+		</div>
+	
 		<script type="text/javascript" src="js/javascript.js"></script>
 	</body>
 </html>
