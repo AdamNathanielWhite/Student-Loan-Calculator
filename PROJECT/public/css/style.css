@@ -1,0 +1,29 @@
+html, body{
+	margin:0px; 
+	padding:0px;
+}
+
+.main {
+	padding: 10px;
+}
+
+.header {
+	border-width: medium;
+	border-color: black;
+	border-style: solid;
+	background-color: #9E9E9E;
+	padding: 0px;
+}
+
+.newLoan {
+	border-style: solid;
+	border-width: thin;
+	border-color: #ff6600;
+	background-color: #dd4400;
+}
+
+.footer {
+	color: gray;
+	background-color: #aaaaaa;
+    bottom: 0px;
+}
