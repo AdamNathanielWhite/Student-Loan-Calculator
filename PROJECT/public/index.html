@@ -3,26 +3,38 @@
 	<head>
 		<title>Student Loan Calculator</title>
 		
+		<!-- Fonts --><!-- 
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bentham" />
+		<link href='https://fonts.googleapis.com/css?family=Vollkorn:400,700' rel='stylesheet' type='text/css'>
+		-->
+		
+		<!-- Internal project files -->
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
-    	<header>
-	        <div class="header">
-    	    	[[image banner here]]
-            </div>
-        </header>
+        <div class="header-wrapper">
+        	<div class="header-content">
+        		<image src="img/calculator.jpg" class="calculator-image" />
+
+        		<div class="title-text">
+        			<!--<h1>Student Loan Calculator</h1>-->
+        			<image src="img/title-text-blue.png" class="title-text-image" />
+        		</div>
+        	</div>
+  		</div>
         <div class="main">
             <div>
                 <form>
                     I am currently on the 
-                    <select name="planType" id="planType">
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="fiat">Fiat</option>
-                        <option value="audi">Audi</option>
+                    <select name="planType" id="planType" class="userInputRectangle">
+                        <option value="standard">Standard (10 year)</option>
+                        <option value="ibr">Income based repayment</option>
+                        <option value="icr">Income contingent repayment</option>
+                        <option value="paye">Pay as you earn</option>
+                        <option value="repaye">Revised pay as you earn</option>
                     </select>
                     plan, which is scheduled to be completed on 
-                    <select name="completedMonth" id="completedMonth">
+                    <select name="completedMonth" id="completedMonth" class="userInputRectangle">
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -37,7 +49,7 @@
                         <option value="12">12</option>
                     </select>
                     /
-                    <select name="completedYear" id="completedYear">
+                    <select name="completedYear" id="completedYear" class="userInputRectangle">
                     	<option value="2016">2016</option>
                         <option value="2017">2017</option>
                         <option value="2018">2018</option>
@@ -75,38 +87,37 @@
                     </select>
                     <br />
                     
-                    My income or expected future income is
-                    <input type="text" name="income" id="income"></input>
+                    My income or expected future income is $
+                    <input type="text" name="income" id="income" class="textInput userInputRectangle"></input>
                     <br />
                     
                     I reside in this state
-                    <select name="stateResidency" id="stateResidency">
+                    <select name="stateResidency" id="stateResidency" class="userInputRectangle">
                         <option value="Lower48">Lower 48</option>
                         <option value="Hawaii">Hawaii</option>
                         <option value="Alaska">Alaska</option>
                     </select>
                     <br />
                     
-                    Based on my career, I am eligible to receive forgiveness after 
-                    <select name="forgivenessYears" id="forgivenessYears">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <br />
+                    <input type="checkbox" name="forgivenessCheckbox" id="forgivenessCheckbox">
+                    Based on my career, I am eligible to receive loan forgiveness 
+                    <div name="loanForgivenessHiddenInputInverse" id="loanForgivenessHiddenInputInverse" class="loan-forgiveness-hidden-input">
+                    &nbsp;
+                    </div>
+                    <div name="loanForgivenessHiddenInput" id="loanForgivenessHiddenInput" class="loan-forgiveness-hidden-input" hidden>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    after 
+					<input type="text" name="forgivenessYears" id="forgivenessYears" class="textInput userInputRectangle"></input> 
+                    years</div>
+                    
                     
                     Extra monthly payment above the minimums
                     <fieldset name="extraPaymentGroup" id="extraPaymentGroup">
                         <input type="radio" value="" name="extraPaymentGroup">Minimum payments only</input><br />
-                        <input type="radio" value="" name="extraPaymentGroup">Extra monthly payment of $
-                            <input type="text" name="extraMonthlyPayment" id="extraMonthlyPayment"></input>
+                        <input type="radio" value="" name="extraPaymentGroup" checked="checked">Extra payment of $
+                            <input type="text" name="extraMonthlyPayment" id="extraMonthlyPayment" 
+                            	class="textInput userInputRectangle" value="100" />
+                            per month
                         </input><br />
                         <input type="radio" value="" name="extraPaymentGroup">Custom (see graph below)</input>
                     </fieldset>
@@ -118,11 +129,11 @@
                     <div name="refinanceOptionDiv" id="refinanceOptionDiv" class="subForm" hidden>
                         <fieldset id="refinanceGroup">
                             Amount $
-                            <input type="text" value="0" name="refinanceAmount" id="refinanceAmount"></input><br />
+                            <input type="text" value="0" name="refinanceAmount" id="refinanceAmount" class="textInput userInputRectangle"></input><br />
                             Number of years
-                            <input type="text" name="nYearsRefinance" id="nYearsRefinance"></input><br />
+                            <input type="text" name="nYearsRefinance" id="nYearsRefinance" class="textInput userInputRectangle"></input><br />
                             Interest rate
-                            <input type="text" name="refinanceInterestRate" id="refinanceInterestRate"></input>
+                            <input type="text" name="refinanceInterestRate" id="refinanceInterestRate" class="textInput userInputRectangle"></input>
                         </fieldset>
                     </div>
                     <br />
@@ -132,7 +143,7 @@
                     <br />
                     
                     Pay off loans in this order
-                    <select name="payOffOrder" id="payOffOrder">
+                    <select name="payOffOrder" id="payOffOrder" class="userInputRectangle">
                         <option value="snowball">Snowball</option>
                         <option value="avalanche">Avalanche</option>
                         <option value="highestRate">Highest rate first</option>
@@ -140,13 +151,17 @@
                     <br />
                     
                     I am considering switching to the
-                    <select name="newRepaymentPlan" id="newRepaymentPlan">
-                        [[copy from repayment plans above]]
+                    <select name="newRepaymentPlan" id="newRepaymentPlan" class="userInputRectangle">
+                        <option value="standard">Standard (10 year)</option>
+                        <option value="ibr">Income based repayment</option>
+                        <option value="icr">Income contingent repayment</option>
+                        <option value="paye">Pay as you earn</option>
+                        <option value="repaye">Revised pay as you earn</option>
                     </select>
                     repayment plan
                     <br />
                     
-                    <button type="button" name="submitButton" id="submitButton">Submit</button>
+                    <button type="button" name="submitButton" id="submitButton" class="userInputRectangle">Submit</button>
                     <br />
                 </form>
             </div>
@@ -156,14 +171,15 @@
                 <div id="newLoan" class="newLoan">
                     <div>
                         Loan amount $
-                        <input type="text" id="loanAmoun"></input>
+                        <input type="text" id="loanAmoun" class="textInput userInputRectangle"></input>
                     </div>
                     <div>
                         Interest rate
-                        <input type="text" id="interestRate"></input>
+                        <input type="text" id="interestRate" class="textInput userInputRectangle"></input>
+                         %
                     </div>
                     <div>
-                        <button type="button" name="submitLoanButton" id="submitLoanButton">Enter</button>
+                        <button type="button" name="submitLoanButton" id="submitLoanButton" class="userInputRectangle">Enter</button>
                     </div>
                 </div>
                 <!-- Insert more loan input divs here -->

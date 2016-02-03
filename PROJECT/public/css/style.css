@@ -3,6 +3,52 @@ html, body{
 	padding:0px;
 }
 
+.header-wrapper {
+	height: 120px;
+    text-align: inherit;
+    position: relative;
+    width: 100%;
+    background: #eeeeee;
+}
+
+.header-content {
+	max-width: 615px; /*ADJUST THIS FOR TITLE WIDTH*/
+	height: 120px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    clear: both;
+	display: block;
+}
+
+.calculator-image {
+    height: 120px;
+    width: 120px;
+}
+
+.title-text {
+	height: 120px;
+	width: 470px; /*ADJUST THIS FOR TITLE WIDTH*/
+	top: 0px;
+	float: right;
+	margin: 4px;
+	margin-left: 0px;
+	font-size: 16pt;
+	font-family: 'Vollkorn', serif;
+}
+.title-text-image {
+	/*height: 120px;
+	width: 545px;*/
+	height: 120px;
+	width: auto;
+	top: 0px;
+	float: right;
+	margin: 4px;
+	margin-left: 0px;
+}
+
 .main {
 	padding: 10px;
 }
@@ -15,11 +61,26 @@ html, body{
 	padding: 0px;
 }
 
+.loan-forgiveness-hidden-input {
+	height: 20px;
+}
+
 .newLoan {
 	border-style: solid;
 	border-width: thin;
 	border-color: #ff6600;
 	background-color: #dd4400;
+}
+
+.userInputRectangle {
+	border-style: solid;
+	border-width: thin;
+	border-color: #cccccc;
+	background-color: #eeeeee;
+}
+
+.textInput {
+	width: 45px;
 }
 
 .footer {
