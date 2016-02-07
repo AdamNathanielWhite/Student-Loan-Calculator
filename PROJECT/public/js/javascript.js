@@ -30,4 +30,10 @@
 			document.getElementById("loanForgivenessHiddenInputInverse").hidden = false;
 		}
 	}, false);
+	
+	
+/* --- ENTERING NEW LOANS --- */
+	document.getElementById("submitLoanButton").addEventListener("click", function(){
+		TODO!!!
+	}, false);
 }());

@@ -26,7 +26,7 @@
             <div>
                 <form>
                     I am currently on the 
-                    <select name="planType" id="planType" class="userInputRectangle">
+                    <select name="planType" id="planType" class="user-input-rectangle">
                         <option value="standard">Standard (10 year)</option>
                         <option value="ibr">Income based repayment</option>
                         <option value="icr">Income contingent repayment</option>
@@ -34,7 +34,7 @@
                         <option value="repaye">Revised pay as you earn</option>
                     </select>
                     plan, which is scheduled to be completed on 
-                    <select name="completedMonth" id="completedMonth" class="userInputRectangle">
+                    <select name="completedMonth" id="completedMonth" class="user-input-rectangle">
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -49,7 +49,7 @@
                         <option value="12">12</option>
                     </select>
                     /
-                    <select name="completedYear" id="completedYear" class="userInputRectangle">
+                    <select name="completedYear" id="completedYear" class="user-input-rectangle">
                     	<option value="2016">2016</option>
                         <option value="2017">2017</option>
                         <option value="2018">2018</option>
@@ -88,11 +88,11 @@
                     <br />
                     
                     My income or expected future income is $
-                    <input type="text" name="income" id="income" class="textInput userInputRectangle"></input>
+                    <input type="text" name="income" id="income" class="textInput user-input-rectangle"></input>
                     <br />
                     
                     I reside in this state
-                    <select name="stateResidency" id="stateResidency" class="userInputRectangle">
+                    <select name="stateResidency" id="stateResidency" class="user-input-rectangle">
                         <option value="Lower48">Lower 48</option>
                         <option value="Hawaii">Hawaii</option>
                         <option value="Alaska">Alaska</option>
@@ -107,7 +107,7 @@
                     <div name="loanForgivenessHiddenInput" id="loanForgivenessHiddenInput" class="loan-forgiveness-hidden-input" hidden>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     after 
-					<input type="text" name="forgivenessYears" id="forgivenessYears" class="textInput userInputRectangle"></input> 
+					<input type="text" name="forgivenessYears" id="forgivenessYears" class="textInput user-input-rectangle"></input> 
                     years</div>
                     
                     
@@ -116,7 +116,7 @@
                         <input type="radio" value="" name="extraPaymentGroup">Minimum payments only</input><br />
                         <input type="radio" value="" name="extraPaymentGroup" checked="checked">Extra payment of $
                             <input type="text" name="extraMonthlyPayment" id="extraMonthlyPayment" 
-                            	class="textInput userInputRectangle" value="100" />
+                            	class="textInput user-input-rectangle" value="100" />
                             per month
                         </input><br />
                         <input type="radio" value="" name="extraPaymentGroup">Custom (see graph below)</input>
@@ -129,11 +129,11 @@
                     <div name="refinanceOptionDiv" id="refinanceOptionDiv" class="subForm" hidden>
                         <fieldset id="refinanceGroup">
                             Amount $
-                            <input type="text" value="0" name="refinanceAmount" id="refinanceAmount" class="textInput userInputRectangle"></input><br />
+                            <input type="text" value="0" name="refinanceAmount" id="refinanceAmount" class="textInput user-input-rectangle"></input><br />
                             Number of years
-                            <input type="text" name="nYearsRefinance" id="nYearsRefinance" class="textInput userInputRectangle"></input><br />
+                            <input type="text" name="nYearsRefinance" id="nYearsRefinance" class="textInput user-input-rectangle"></input><br />
                             Interest rate
-                            <input type="text" name="refinanceInterestRate" id="refinanceInterestRate" class="textInput userInputRectangle"></input>
+                            <input type="text" name="refinanceInterestRate" id="refinanceInterestRate" class="textInput user-input-rectangle"></input>
                         </fieldset>
                     </div>
                     <br />
@@ -143,7 +143,7 @@
                     <br />
                     
                     Pay off loans in this order
-                    <select name="payOffOrder" id="payOffOrder" class="userInputRectangle">
+                    <select name="payOffOrder" id="payOffOrder" class="user-input-rectangle">
                         <option value="snowball">Snowball</option>
                         <option value="avalanche">Avalanche</option>
                         <option value="highestRate">Highest rate first</option>
@@ -151,7 +151,7 @@
                     <br />
                     
                     I am considering switching to the
-                    <select name="newRepaymentPlan" id="newRepaymentPlan" class="userInputRectangle">
+                    <select name="newRepaymentPlan" id="newRepaymentPlan" class="user-input-rectangle">
                         <option value="standard">Standard (10 year)</option>
                         <option value="ibr">Income based repayment</option>
                         <option value="icr">Income contingent repayment</option>
@@ -161,25 +161,25 @@
                     repayment plan
                     <br />
                     
-                    <button type="button" name="submitButton" id="submitButton" class="userInputRectangle">Submit</button>
+                    <button type="button" name="submitButton" id="submitButton" class="user-input-rectangle">Submit</button>
                     <br />
                 </form>
             </div>
                 
-            <div>
+            <div id="inputLoanArea" name="inputLoanArea" class="input-loan-area">
                 <!-- This following div needs to be repeated for each loan -->
-                <div id="newLoan" class="newLoan">
-                    <div>
+                <div id="newLoan" class="new-loan">
+                    <div class="horizontal-divs loan-amount-input">
                         Loan amount $
-                        <input type="text" id="loanAmoun" class="textInput userInputRectangle"></input>
+                        <input type="text" id="loanAmount" class="textInput user-input-rectangle"></input>
                     </div>
-                    <div>
+                    <div class="horizontal-divs interest-rate-input">
                         Interest rate
-                        <input type="text" id="interestRate" class="textInput userInputRectangle"></input>
+                        <input type="text" id="interestRate" class="textInput user-input-rectangle"></input>
                          %
                     </div>
-                    <div>
-                        <button type="button" name="submitLoanButton" id="submitLoanButton" class="userInputRectangle">Enter</button>
+                    <div class="horizontal-divs submit-loan-button">
+                        <button type="button" name="submitLoanButton" id="submitLoanButton" class="user-input-rectangle">Enter</button>
                     </div>
                 </div>
                 <!-- Insert more loan input divs here -->

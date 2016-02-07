@@ -65,14 +65,40 @@ html, body{
 	height: 20px;
 }
 
-.newLoan {
+.horizontal-divs {
+	float: right;
+	float: left;
+}
+
+/* begin INPUT NEW LOAN section */
+.input-loan-area {
+	margin-top: 5px;
+}
+.new-loan {
+	clear: both;
 	border-style: solid;
 	border-width: thin;
 	border-color: #ff6600;
 	background-color: #dd4400;
+	height: 18px;
+	padding: 5px;
 }
+.loan-amount-input {
+	margin-left: 3%;
+	float: left;
+}
+.interest-rate-input {
+	float: center;
+	/*left: 200px;*/
+	margin-left: 10%;
+}
+.submit-loan-button {
+	float: right;
+	margin-right: 3%;
+}
+/* end INPUT NEW LOAN section */
 
-.userInputRectangle {
+.user-input-rectangle {
 	border-style: solid;
 	border-width: thin;
 	border-color: #cccccc;
