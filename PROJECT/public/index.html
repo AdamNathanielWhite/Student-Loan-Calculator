@@ -166,19 +166,31 @@
                 </form>
             </div>
                 
-            <div id="inputLoanArea" name="inputLoanArea" class="input-loan-area">
-                <!-- This following div needs to be repeated for each loan -->
-                <div id="newLoan" class="new-loan">
-                    <div class="horizontal-divs loan-amount-input">
+            <div id="loans" name="loans" class="loans-area">
+                <!-- JS inserts displayed loans here -->
+                <div id="displayLoan0" class="single-loan-row single-loan-row-locked">
+                	<div class="horizontal-divs loan-amount">
+                		<output type="text" id="loanAmount0" class="display-loan-output"></output>
+                	</div>
+                	<div class="horizontal-divs interest-rate-column">
+                		<output type="text" id="interestRate0" class="display-loan-output"></output>
+                	</div>
+                	<div class="horizontal-divs add-edit-loan-button">
+                		<button type="button" id="editLoanButton0" class="user-input-rectangle loan-edit-button">Edit</button>
+                	</div>
+                </div>
+                
+                <div id="newLoan" class="single-loan-row">
+                    <div class="horizontal-divs loan-amount">
                         Loan amount $
-                        <input type="text" id="loanAmount" class="textInput user-input-rectangle"></input>
+                        <input type="text" id="loanAmountInput" class="textInput user-input-rectangle"></input>
                     </div>
-                    <div class="horizontal-divs interest-rate-input">
+                    <div class="horizontal-divs interest-rate-column">
                         Interest rate
-                        <input type="text" id="interestRate" class="textInput user-input-rectangle"></input>
+                        <input type="text" id="interestRateInput" class="textInput user-input-rectangle"></input>
                          %
                     </div>
-                    <div class="horizontal-divs submit-loan-button">
+                    <div class="horizontal-divs add-edit-loan-button">
                         <button type="button" name="submitLoanButton" id="submitLoanButton" class="user-input-rectangle">Enter</button>
                     </div>
                 </div>
