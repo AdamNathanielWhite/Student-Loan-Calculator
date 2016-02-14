@@ -1,6 +1,6 @@
 
 
-/* --- CHECKBOXES TOGGLE HIDDEN CONTENT --- */
+/* --- MANIPULATING HTML ELEMENTS ON THE PAGE. hide things, show data, etc --- */
 document.getElementById("refinanceCheckbox").addEventListener("click", function(){
 	if(document.getElementById("refinanceCheckbox").checked) {
 		document.getElementById("refinanceOptionDiv").hidden = false;
@@ -22,7 +22,10 @@ document.getElementById("forgivenessCheckbox").addEventListener("click", functio
 /* --- INPUTTING NEW LOANS --- */
 document.getElementById("submitLoanButton").addEventListener("click", function(){
 	// Create loan object and add it to the data structure list of loans
-	var newLoanAmount = document.getElementById("loanAmount").value;
-	var newLoanRate = document.getElementById("interestRate").value;
+	var newLoanAmount = document.getElementById("loanAmountInput").value;
+	var newLoanRate = document.getElementById("interestRateInput").value;
+	
+	//TODO: sanitize inputs. not blank, no spaces, negative, rate is within normal bounds
+	
 	addLoan(newLoanAmount, newLoanRate); 
 }, false);
