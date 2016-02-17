@@ -1,5 +1,3 @@
-
-
 /* --- MANIPULATING HTML ELEMENTS ON THE PAGE. hide things, show data, etc --- */
 document.getElementById("refinanceCheckbox").addEventListener("click", function(){
 	if(document.getElementById("refinanceCheckbox").checked) {
@@ -19,8 +17,9 @@ document.getElementById("forgivenessCheckbox").addEventListener("click", functio
 }, false);
 
 
-/* --- INPUTTING NEW LOANS --- */
+/* --- LOAN INPUT --- */
 document.getElementById("submitLoanButton").addEventListener("click", function(){
+	//alert("submitLoanButton event");
 	// Create loan object and add it to the data structure list of loans
 	var newLoanAmount = document.getElementById("loanAmountInput").value;
 	var newLoanRate = document.getElementById("interestRateInput").value;
