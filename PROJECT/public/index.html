@@ -113,13 +113,17 @@
                     
                     Extra monthly payment above the minimums
                     <fieldset name="extraPaymentGroup" id="extraPaymentGroup">
-                        <input type="radio" value="" name="extraPaymentGroup">Minimum payments only</input><br />
-                        <input type="radio" value="" name="extraPaymentGroup" checked="checked">Extra payment of $
-                            <input type="text" name="extraMonthlyPayment" id="extraMonthlyPayment" 
-                            	class="textInput user-input-rectangle" value="100" />
-                            per month
-                        </input><br />
-                        <input type="radio" value="" name="extraPaymentGroup">Custom (see graph below)</input>
+                        <input type="radio" value="extraPaymentNone" id="extraPaymentNone" name="extraPaymentGroup">
+                        	<label for="extraPaymentGroup">
+                        		Minimum payments only
+                        	</label><br />
+                        <input type="radio" value="extraPayment" id="extraPayment" name="extraPaymentGroup" checked="checked">
+                        	<label for="extraPaymentGroup">
+	                        	Extra payment of $
+	                            <input type="text" id="extraMonthlyPaymentAmount" class="textInput user-input-rectangle" value="100" />
+	                            per month
+                        	</label><br />
+                        <input type="radio" value="extraPaymentCustom" id="extraPaymentCustom" name="extraPaymentGroup">Custom (see graph below)</input>
                     </fieldset>
                     <br />
                     

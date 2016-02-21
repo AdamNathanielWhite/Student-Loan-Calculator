@@ -1,6 +1,5 @@
 /* LOAN DATA STORAGE */
 var listLoans = new Array();
-
 //outputs the listLoans variable to the screen
 function displayLoans() {
 	//Need to clear out other rows that were made here before
@@ -41,7 +40,6 @@ function displayLoans() {
 		}, false);
 	}
 }
-
 //insert a new loan
 function addLoan(amount, rate) {
 	var newLoan = {'amount': amount, 'rate': rate};
@@ -49,3 +47,5 @@ function addLoan(amount, rate) {
 	//alert("listLoans[0].amount=" + listLoans[0].amount + "  listLoans[0].rate=" + listLoans[0].rate);
 	displayLoans();
 }
+
+/* SCENARIO HANDLER */
