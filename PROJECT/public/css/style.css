@@ -1,0 +1,125 @@
+html, body{
+	margin:0px; 
+	padding:0px;
+}
+
+.header-wrapper {
+	height: 120px;
+    text-align: inherit;
+    position: relative;
+    width: 100%;
+    background: #eeeeee;
+}
+
+.header-content {
+	max-width: 615px; /*ADJUST THIS FOR TITLE WIDTH*/
+	height: 120px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    clear: both;
+	display: block;
+}
+
+.calculator-image {
+    height: 120px;
+    width: 120px;
+}
+
+.title-text {
+	height: 120px;
+	width: 470px; /*ADJUST THIS FOR TITLE WIDTH*/
+	top: 0px;
+	float: right;
+	margin: 4px;
+	margin-left: 0px;
+	font-size: 16pt;
+	font-family: 'Vollkorn', serif;
+}
+.title-text-image {
+	/*height: 120px;
+	width: 545px;*/
+	height: 120px;
+	width: auto;
+	top: 0px;
+	float: right;
+	margin: 4px;
+	margin-left: 0px;
+}
+
+.main {
+	padding: 10px;
+}
+
+.header {
+	border-width: medium;
+	border-color: black;
+	border-style: solid;
+	background-color: #9E9E9E;
+	padding: 0px;
+}
+
+.loan-forgiveness-hidden-input {
+	height: 20px;
+}
+
+.horizontal-divs {
+	float: left;
+}
+
+/* begin INPUT NEW LOAN section */
+.loans-area {
+	margin-top: 5px;
+}
+.single-loan-row {
+	clear: both;
+	border-style: solid;
+	border-width: thin;
+	border-color: #ff6600;
+	background-color: #dd4400;
+	height: 18px;
+	padding: 5px;
+}
+.single-loan-row-locked {
+	border-color: #ffaa44;
+	background-color: #ff8844;
+}
+.loan-amount {
+	margin-left: 3%;
+	float: left;
+	width: 30%;
+}
+.interest-rate-column {
+	margin-left: 10%;
+}
+.add-edit-loan-button {
+	float: right;
+	margin-right: 3%;
+}
+/* end INPUT NEW LOAN section */
+
+.user-input-rectangle {
+	border-style: solid;
+	border-width: thin;
+	border-color: #cccccc;
+	background-color: #eeeeee;
+}
+
+.textInput {
+	width: 45px;
+}
+
+.footer {
+	color: gray;
+	background-color: #aaaaaa;
+    bottom: 0px;
+}
+
+.manual-text {
+	padding: 20px;
+}
+/*h2 {
+	color: #5555aa;
+}*/
