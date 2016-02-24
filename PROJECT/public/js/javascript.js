@@ -37,6 +37,9 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var plan = document.getElementById("planType").value;
 	var completedMonth = document.getElementById("completedMonth").value;
 	var completedYear = document.getElementById("completedYear").value;
+	var defermentBool = document.getElementById("defermentCheck").value;
+	var defermentMonth = document.getElementById("defermentMonth").value;
+	var defermentYear = document.getElementById("defermentYear").value;
 	var income = document.getElementById("income").value;
 	var stateResidency = document.getElementById("stateResidency").value;
 	var forgivenessCheckbox = document.getElementById("forgivenessCheckbox").value;
