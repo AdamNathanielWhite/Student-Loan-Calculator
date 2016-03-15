@@ -1,3 +1,5 @@
+console.log("scenarioGenerator.js loaded");
+
 function createScenarioObject() {
 	//TODO: Take in a bunch of scenario variables as arguments, possibly in enums. Create an object with these values.
 }
@@ -23,4 +25,40 @@ function evaluateScenario(scenario) {
 }
 function evaluateAll(scenario) {
 	//TODO: return a combination of all 3 evaluations above. Either multiply or add them together. 
+}
+
+function calculateMonthlyMinimum(loan, paymentPlan, totalMonthsRemaining) {
+	console.log("calculateMonthlyMinimum()");
+	var monthlyInterestPayment = 0;
+	var monthlyPrinciplePayment = 0;
+	var totalMinimumMonthlyPayment = 0;
+	
+	/*if(paymentPlan == "standard") {*/
+	//assume standard payment plan
+	console.log(loan);
+	monthlyPrinciplePayment = loan.startingAmount / 120;
+	var rate = loan.rate / 100;
+	var irf = rate / 365.25; //assume all months are exact same time length. //Reference: http://www.debtfreeadventure.com/how-student-loan-interest-is-calculated-and-why-it-varies-from-month-to-month/
+	monthlyInterestPayment = 30.44 * loan.startingAmount * irf;
+	/*} else if(paymentPlan == "ibr") {
+		
+	} else if(paymentPlan == "icr") {
+		
+	} else if(paymentPlan == "paye") {
+		
+	} else if(paymentPlan == "repaye") {
+		
+	}
+	//TODO: Right now, we are just using the standard payment above*/
+	
+	totalMinimumMonthlyPayment = monthlyInterestPayment + monthlyPrinciplePayment;
+	loan.monthlyMinimumPrinciple = monthlyPrinciplePayment;
+	loan.monthlyMinimumInterest = monthlyInterestPayment;
+	loan.monthlyAmounts[0].principlePayment = monthlyPrinciplePayment;
+	loan.monthlyAmounts[0].interestPayment = monthlyInterestPayment;
+	
+	console.log(loan);
+	console.log("For this loan, the monthly principle payment is " + monthlyPrinciplePayment + " and the monthly interest payment is " + monthlyInterestPayment + 
+			" Combined, this is a total monthly minimum payment of " + totalMinimumMonthlyPayment);
+	return totalMinimumMonthlyPayment;
 }

@@ -110,6 +110,9 @@ html, body{
 .textInput {
 	width: 45px;
 }
+.missing-required-input {
+	border-color: #cc0000;
+}
 
 .footer {
 	color: gray;

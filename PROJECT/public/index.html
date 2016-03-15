@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	<meta charset="utf-8"/>
 		<title>Student Loan Calculator</title>
 		
 		<!-- Fonts --><!-- 
@@ -112,7 +113,7 @@
                     <br />
                     
                     My income or expected future income is $
-                    <input type="text" name="income" id="income" class="textInput user-input-rectangle"></input>
+                    <input type="number" name="income" id="income" min="0" max="1000000" step="1" class="textInput user-input-rectangle"></input>
                     <br />
                     
                     I reside in this state
@@ -131,7 +132,7 @@
                     <div name="loanForgivenessHiddenInput" id="loanForgivenessHiddenInput" class="loan-forgiveness-hidden-input" hidden>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     after 
-					<input type="text" name="forgivenessYears" id="forgivenessYears" class="textInput user-input-rectangle"></input> 
+					<input type="text" name="forgivenessYears" id="forgivenessYears" min="0" max="50" step="1" class="textInput user-input-rectangle"></input> 
                     years</div>
                     
                     
@@ -246,6 +247,7 @@
             </div>
         </footer>
 	
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script> <!-- JQuery -->
 		<script type="text/javascript" src="js/dataHandler.js"></script>
 		<script type="text/javascript" src="js/scenarioGenerator.js"></script>
 		<script type="text/javascript" src="js/javascript.js"></script>
