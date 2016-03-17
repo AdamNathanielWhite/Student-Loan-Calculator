@@ -84,8 +84,8 @@ function playScenario() {
 	for(var i=0; i<listLoans.length; i++) {
 		var newLoan = {"rate": listLoans[i].rate, "startingAmount": listLoans[i].amount, 
 				"monthlyAmounts": [{"principleRemaining": listLoans[i].amount, "principlePayment": 0, "interestPayment": 0}]};
-		newLoan.monthlyAmounts[0].principlePayment = getLoanPrinciplePayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan);
-		newLoan.monthlyAmounts[0].interestPayment = getLoanInterestPayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan);
+		newLoan.monthlyAmounts[0].principlePayment = getLoanPrincipleMinimumPayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan, scenario.plan, newLoan.rate);
+		newLoan.monthlyAmounts[0].interestPayment = getLoanInterestMinimumPayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan, scenario.plan, newLoan.rate);
 		future.loans.push(newLoan);
 		console.log("Inserting new loan " + JSON.stringify(newLoan, null, 2));
 		
@@ -141,8 +141,8 @@ function playScenario() {
 				moneyRemainingThisMonth -= Number(currentMonthLoanInfo.interestPayment);
 				
 				// generate the next month's info
-				nextMonthLoanInfo.principleRemaining = currentMonthLoanInfo.principleRemaining - currentMonthLoanInfo.principlePayment; //now $0. //TODO: problems with floats?? 0!=0
-				console.log("Paid the minimum, which was the final payment. We did pay down the principle by " + currentMonthLoanInfo.principlePayment);
+				nextMonthLoanInfo.principleRemaining = 0;
+				console.log("Paid the minimum, which was the final payment.");
 			}
 			
 			// Not finished paying off loans, reset bool
@@ -151,8 +151,8 @@ function playScenario() {
 			}
 			
 			// How much do we owe next month?
-			nextMonthLoanInfo.principlePayment = getLoanPrinciplePayment(currentMonthLoanInfo.principleRemaining, future.information.totalMonthsInPaymentPlan-monthNum); //monthNum off by 1?
-			nextMonthLoanInfo.interestPayment = getLoanInterestPayment(currentMonthLoanInfo.principleRemaining, future.information.totalMonthsInPaymentPlan-monthNum); //monthNum off by 1?
+			nextMonthLoanInfo.principlePayment = getLoanPrincipleMinimumPayment(currentMonthLoanInfo.principleRemaining, future.information.totalMonthsInPaymentPlan-monthNum, scenario.plan, future.loans[j].rate); //monthNum off by 1?
+			nextMonthLoanInfo.interestPayment = getLoanInterestMinimumPayment(currentMonthLoanInfo.principleRemaining, future.information.totalMonthsInPaymentPlan-monthNum, scenario.plan, future.loans[j].rate); //monthNum off by 1?
 			future.loans[j].monthlyAmounts.push(nextMonthLoanInfo);
 			console.log("pushing next month loan " + JSON.stringify(nextMonthLoanInfo, null, 2) + "\n to future.loans.monthlyAmounts " + JSON.stringify(future.loans[j].monthlyAmounts, null, 2));
 		}

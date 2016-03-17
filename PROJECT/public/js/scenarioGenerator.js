@@ -27,44 +27,6 @@ function evaluateAll(scenario) {
 	//TODO: return a combination of all 3 evaluations above. Either multiply or add them together. 
 }
 
-
-//calculateMonthlyMinimum needs to be deleted. It doesn't do what we want it to do. Copy some of the code to elsewhere.
-/*function calculateMonthlyMinimum(loan, paymentPlan, totalMonthsRemaining) {
-	console.log("calculateMonthlyMinimum()");
-	var monthlyInterestPayment = 0;
-	var monthlyPrinciplePayment = 0;
-	var totalMinimumMonthlyPayment = 0;
-	
-	/*if(paymentPlan == "standard") {*//*
-	//assume standard payment plan
-	console.log(loan);
-	monthlyPrinciplePayment = loan.startingAmount / 120;
-	var rate = loan.rate / 100;
-	var irf = rate / 365.25; //assume all months are exact same time length. //Reference: http://www.debtfreeadventure.com/how-student-loan-interest-is-calculated-and-why-it-varies-from-month-to-month/
-	monthlyInterestPayment = 30.44 * loan.startingAmount * irf;
-	/*} else if(paymentPlan == "ibr") {
-		
-	} else if(paymentPlan == "icr") {
-		
-	} else if(paymentPlan == "paye") {
-		
-	} else if(paymentPlan == "repaye") {
-		
-	}
-	//TODO: Right now, we are just using the standard payment above*//*
-	
-	totalMinimumMonthlyPayment = monthlyInterestPayment + monthlyPrinciplePayment;
-	loan.monthlyMinimumPrinciple = monthlyPrinciplePayment;
-	loan.monthlyMinimumInterest = monthlyInterestPayment;
-	loan.monthlyAmounts[0].principlePayment = monthlyPrinciplePayment;
-	loan.monthlyAmounts[0].interestPayment = monthlyInterestPayment;
-	
-	console.log(loan);
-	console.log("For this loan, the monthly principle payment is " + monthlyPrinciplePayment + " and the monthly interest payment is " + monthlyInterestPayment + 
-			" Combined, this is a total monthly minimum payment of " + totalMinimumMonthlyPayment);
-	return totalMinimumMonthlyPayment;
-}*/
-
 //The 'worst' loan is the one that the user should pay down next
 function getWorstLoanIndex(loans, scenario) {
 	//console.log("getWorstLoanIndex()");
@@ -102,11 +64,60 @@ function getWorstLoanIndex(loans, scenario) {
 }
 
 //Find the interest and principle payments that are required this month
-function getLoanInterestPayment(currentPrincipleRemaining, monthsRemaining) {
-	console.log("getLoanInterestPayment is INCOMPLETE");
-	return 50;
+function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
+	//TODO: delete the input monthsRemaining. it isn't used.
+	console.log("getLoanInterestMinimumPayment()");
+	var interestPayment = 0;
+	
+	//check if this loan is paid off
+	if (currentPrincipleRemaining === 0 ) {
+		return 0;
+	}
+	
+	//console.log("type of payment plan is " + typeof(paymentPlan) + " payment plan is " + paymentPlan);
+	if(paymentPlan === "standard") {
+		var rate = interestRate / 100;
+		var irf = rate / 365.25; //We are assuming all months are exact same time length. //Reference: http://www.debtfreeadventure.com/how-student-loan-interest-is-calculated-and-why-it-varies-from-month-to-month/
+		interestPayment = 30.44 * currentPrincipleRemaining * irf;
+	} else if(paymentPlan === "ibr") {
+		
+	} else if(paymentPlan === "icr") {
+		
+	} else if(paymentPlan === "paye") {
+		
+	} else if(paymentPlan === "repaye") {
+		
+	}
+	
+	return interestPayment;
 }
-function getLoanPrinciplePayment(currentPrincipleRemaining, monthsRemaining) {
-	console.log("getLoanPrinciplePayment is INCOMPLETE");
-	return 100;
+function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
+	console.log("getLoanPrincipleMinimumPayment()");
+	
+	//check if this loan is paid off
+	if (currentPrincipleRemaining === 0 ) {
+		return 0;
+	}
+	
+	var principlePayment = 0;
+	var ratePerMonthlyPeriod = (interestRate / 100) / 12;
+	//To calculate the current payment, use this formula:  PV  /  [(1- (1 / (1 + i)n )) / i]    //Source: https://answers.yahoo.com/question/index?qid=20080822070859AAY94ZT
+	//                                                     ^^^^^^^ THIS IS IMPORTANT ^^^^^^^
+	
+	if(paymentPlan === "standard") {
+		//wrong, but close approximation: //principlePayment = currentPrincipleRemaining / monthsRemaining
+		var totalPayment = currentPrincipleRemaining / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), monthsRemaining)))/ratePerMonthlyPeriod);
+		principlePayment = totalPayment - getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate);
+		//TODO: major speed problem. We shouldn't have to call getLoanInterestMinimumPayment here. Parent function also calls this.
+	} else if(paymentPlan === "ibr") {
+		
+	} else if(paymentPlan === "icr") {
+		
+	} else if(paymentPlan === "paye") {
+		
+	} else if(paymentPlan === "repaye") {
+		
+	}
+	
+	return principlePayment;
 }
