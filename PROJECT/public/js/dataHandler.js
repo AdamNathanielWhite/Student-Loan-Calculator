@@ -177,4 +177,6 @@ function playScenario() {
 	
 	console.log(future);
 	console.log("Complete future is " + JSON.stringify(future, null, 2));
+	
+	displayFuture(future);
 }

@@ -117,3 +117,42 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	//pass the json object into the data handler
 	addScenario(jsonInputScenario);
 }, false);
+
+function displayFuture(future) {
+	//iterate through each loan and sum up all the payments
+	var totalSumOfPayments = 0;
+	var finalPayoffMonthNum = 0;
+	for(var loanNum=0; loanNum<future.loans.length; loanNum++ ) {
+		for(var monthNum=0; monthNum<future.loans[loanNum].monthlyAmounts.length; monthNum++ ) {
+			totalSumOfPayments += future.loans[loanNum].monthlyAmounts[monthNum].principlePayment;
+			totalSumOfPayments += future.loans[loanNum].monthlyAmounts[monthNum].interestPayment;
+			
+			//find the last month
+			if(finalPayoffMonthNum < monthNum ) {
+				finalPayoffMonthNum = monthNum;
+			}
+		}
+	}
+	console.log("The last month of payments is month number " + finalPayoffMonthNum);
+	console.log("The total sum of payments is " + totalSumOfPayments);
+	
+	//convert number of months of payoff to an actual date
+	var payoffMonth = Math.trunc(todaysMonth + finalPayoffMonthNum % 12);
+	var payoffYear = Math.trunc(todaysYear + finalPayoffMonthNum/12);
+	while ( payoffMonth > 12 ) {
+		payoffMonth -= 12;
+		payoffYear += 1;
+	}
+	var payoffDateString = payoffMonth + "/" + payoffYear;
+	console.log("Payoff MM/YYYY is " + payoffDateString);
+	
+	//don't let the user see null data
+	if(totalSumOfPayments === 0) {
+		return;
+	}
+	
+	//output data to the user
+	document.getElementById("loanPayoffDateOutput").value = payoffDateString;
+	document.getElementById("totalOfPaymentsOutput").value = "$" + totalSumOfPayments; 
+	document.getElementById("futureResults").removeAttribute("hidden");
+}

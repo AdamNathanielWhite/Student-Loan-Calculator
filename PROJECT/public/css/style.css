@@ -114,6 +114,10 @@ html, body{
 	border-color: #cc0000;
 }
 
+.output-bold {
+	font-weight: bold;
+}
+
 .footer {
 	color: gray;
 	background-color: #aaaaaa;
