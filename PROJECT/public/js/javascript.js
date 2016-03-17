@@ -63,6 +63,15 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	}
 	income = Number(income);
 	
+	// Extra payment
+	if(extraPaymentOption == "extraPaymentNone") {
+		extraMonthlyPaymentAmount = 0;
+	}
+	//else if(extraPaymentOption == "extraPaymentCustom") {
+		//TODO: Vary the payments based on graph input. This block of code shouldn't live here. (where should it go?)
+	//}
+	
+	
 	//TODO: This is incorrect - http://clubmate.fi/javascript-adding-and-removing-class-names-from-elements/
 //	if( document.getElementById("forgivenessYears").hasClass(" missing-required-input ") ) { 
 //		//document.getElementById("forgivenessYears").removeClass(" missing-required-input "); 

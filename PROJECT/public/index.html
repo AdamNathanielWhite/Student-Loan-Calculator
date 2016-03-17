@@ -47,7 +47,7 @@
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
-                        <option value="11">11</option>
+                        <option value="11" selected>11</option>
                         <option value="12">12</option>
                     </select>
                     /
@@ -62,7 +62,7 @@
                         <option value="2023">2023</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
-                        <option value="2026">2026</option>
+                        <option value="2026" selected>2026</option>
                         <option value="2027">2027</option>
                         <option value="2028">2028</option>
                         <option value="2029">2029</option>
@@ -89,7 +89,7 @@
                     </select>
                     <br />
                     
-                    <input type="checkbox" value="defermentCheck" id="defermentCheck" name="defermentCheck" />
+                    <input type="checkbox" value="defermentCheck" id="defermentCheck" name="defermentCheck" checked />
                     I am currently in deferment or not required to pay until 
                     <select name="defermentMonth" id="defermentMonth" class="user-input-rectangle">
                     	<option value="01">01</option>
@@ -102,7 +102,7 @@
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
-                        <option value="11">11</option>
+                        <option value="11" selected>11</option>
                         <option value="12">12</option>
                     </select>
                     /
@@ -138,11 +138,11 @@
                     
                     Extra monthly payment above the minimums
                     <fieldset name="extraPaymentGroup" id="extraPaymentGroup">
-                        <input type="radio" value="extraPaymentNone" id="extraPaymentNone" name="extraPaymentGroup">
+                        <input type="radio" value="extraPaymentNone" id="extraPaymentNone" name="extraPaymentGroup" checked="checked">
                         	<label for="extraPaymentGroup">
                         		Minimum payments only
                         	</label><br />
-                        <input type="radio" value="extraPayment" id="extraPayment" name="extraPaymentGroup" checked="checked">
+                        <input type="radio" value="extraPayment" id="extraPayment" name="extraPaymentGroup">
                         	<label for="extraPaymentGroup">
 	                        	Extra payment of $
 	                            <input type="text" id="extraMonthlyPaymentAmount" class="textInput user-input-rectangle" value="100" />
