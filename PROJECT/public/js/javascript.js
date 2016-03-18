@@ -71,7 +71,6 @@ document.getElementById("submitButton").addEventListener("click", function() {
 		//TODO: Vary the payments based on graph input. This block of code shouldn't live here. (where should it go?)
 	//}
 	
-	
 	//TODO: This is incorrect - http://clubmate.fi/javascript-adding-and-removing-class-names-from-elements/
 //	if( document.getElementById("forgivenessYears").hasClass(" missing-required-input ") ) { 
 //		//document.getElementById("forgivenessYears").removeClass(" missing-required-input "); 

@@ -83,7 +83,15 @@ function playScenario() {
 	
 	//initialize all loans
 	for(var i=0; i<listLoans.length; i++) {
-		var newLoan = {"rate": listLoans[i].rate, "startingAmount": listLoans[i].amount, 
+		//interest rate on autopay
+		var interestRate = listLoans[i].rate;
+		console.log("Autopay is (string-bool) " + scenario.usingAutopay);
+		if(scenario.usingAutopay === "true") {
+			interestRate -= 0.25;
+			console.log("Autopay has saved 0.25%, and the new interest rate is " + interestRate);
+		}
+		
+		var newLoan = {"rate": interestRate, "startingAmount": listLoans[i].amount, 
 				"monthlyAmounts": [{"principleRemaining": listLoans[i].amount, "principlePayment": 0, "interestPayment": 0}]};
 		newLoan.monthlyAmounts[0].principlePayment = getLoanPrincipleMinimumPayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan, scenario.plan, newLoan.rate);
 		newLoan.monthlyAmounts[0].interestPayment = getLoanInterestMinimumPayment(newLoan.monthlyAmounts[0].principleRemaining, future.information.totalMonthsInPaymentPlan, scenario.plan, newLoan.rate);
