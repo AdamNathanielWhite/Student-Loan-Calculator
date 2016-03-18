@@ -66,7 +66,7 @@ function getWorstLoanIndex(loans, scenario) {
 //Find the interest and principle payments that are required this month
 function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
 	//TODO: delete the input monthsRemaining. it isn't used.
-	console.log("getLoanInterestMinimumPayment()");
+	console.log("getLoanInterestMinimumPayment() Inputs are: " + currentPrincipleRemaining + "  " + monthsRemaining + "  " + paymentPlan + "  " + interestRate);
 	var interestPayment = 0;
 	
 	//check if this loan is paid off
@@ -93,6 +93,7 @@ function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemainin
 }
 function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
 	console.log("getLoanPrincipleMinimumPayment()");
+	console.log("getLoanPrincipleMinimumPayment() Inputs are: " + currentPrincipleRemaining + "  " + monthsRemaining + "  " + paymentPlan + "  " + interestRate);
 	
 	//check if this loan is paid off
 	if (currentPrincipleRemaining === 0 ) {
