@@ -146,45 +146,11 @@ function playScenario() {
 				console.log("The expected payment was less than the $50 minimum payment. Bumped the payment up to $50. Next month's principle remaining is " + nextMonthLoanInfo.principleRemaining);
 			}
 			
-			/*// $50 minimum payment.
-			else if (currentMonthLoanInfo.principleRemaining < 50 ) {
-				nextMonthLoanInfo.principlePayment = 50 - currentMonthLoanInfo.interestPayment;
-				nextMonthLoanInfo.principleRemaining = 0;
-				console.log("The principle remaining is $" + currentMonthLoanInfo.principleRemaining + " which is less than the $50 minimum. This is the final payment. The next months principle remaining is " + nextMonthLoanInfo.principleRemaining);
-			}
-			else if ( (currentMonthLoanInfo.principlePayment + currentMonthLoanInfo.interestPayment) < 50 ) {
-				//console.log("The total payment is " + (currentMonthLoanInfo.principlePayment + currentMonthLoanInfo.interestPayment) + " which is less than the $50 minimum");
-				currentMonthLoanInfo.principlePayment = ( 50 - currentMonthLoanInfo.interestPayment );
-				nextMonthLoanInfo.principleRemaining = currentMonthLoanInfo.principleRemaining - currentMonthLoanInfo.principlePayment;
-				console.log("The expected payment of " + (currentMonthLoanInfo.principlePayment + currentMonthLoanInfo.interestPayment) + " was less than the $50 minimum payment. Bumped the payment up to $50. Next month's principle remaining is " + nextMonthLoanInfo.principleRemaining);
-			}*/
-			
 			// Pay the minimums here
 			else if( (currentMonthLoanInfo.principleRemaining > currentMonthLoanInfo.principlePayment) && (defermentMonthsRemainingCountdown <= 0) ) {
-				//moneyRemainingThisMonth -= Number(currentMonthLoanInfo.principlePayment);
-				//moneyRemainingThisMonth -= Number(currentMonthLoanInfo.interestPayment);
-				
-				// generate the next month's info
 				nextMonthLoanInfo.principleRemaining = currentMonthLoanInfo.principleRemaining - currentMonthLoanInfo.principlePayment;
-				
-				/*//rounding errors //TODO This block may not be necessary anymore
-				if( nextMonthLoanInfo.principleRemaining > 0.0 && nextMonthLoanInfo.principleRemaining < 0.009) {
-					console.log("We have a rounding error. This loan has nothing remaining.");
-					nextMonthLoanInfo.principleRemaining = 0;
-					nextMonthLoanInfo.principlePayment = 0;
-				}*/
 				console.log("Paid the minimum. The principle remaining now is " + nextMonthLoanInfo.principleRemaining + " We did pay down the principle by " + currentMonthLoanInfo.principlePayment);
 			} 
-			
-			/*// Small amount of money remaining on this loan. This is the final payment before the loan is completely paid off
-			else if ( (currentMonthLoanInfo.principleRemaining > 0) && (defermentMonthsRemainingCountdown < 0) )  { 
-				moneyRemainingThisMonth -= Number(currentMonthLoanInfo.principlePayment);
-				moneyRemainingThisMonth -= Number(currentMonthLoanInfo.interestPayment);
-				
-				// generate the next month's info
-				nextMonthLoanInfo.principleRemaining = 0;
-				console.log("Paid the minimum, which was the final payment.");
-			}*/
 			
 			//rounding errors
 			if( nextMonthLoanInfo.principleRemaining > 0.0 && nextMonthLoanInfo.principleRemaining < 0.009) {
