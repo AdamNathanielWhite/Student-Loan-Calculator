@@ -23,10 +23,19 @@ document.getElementById("forgivenessCheckbox").addEventListener("click", functio
 document.getElementById("submitLoanButton").addEventListener("click", function(){
 	//alert("submitLoanButton event");
 	// Create loan object and add it to the data structure list of loans
-	var newLoanAmount = document.getElementById("loanAmountInput").value;
-	var newLoanRate = document.getElementById("interestRateInput").value;
+	var newLoanAmount = Number(document.getElementById("loanAmountInput").value);
+	var newLoanRate = Number(document.getElementById("interestRateInput").value);
 	
-	//TODO: sanitize inputs. not blank, no spaces, negative, rate is within normal bounds
+	//Sanitize inputs
+	console.log("typeof newLoanAmount is " + typeof(newLoanAmount));
+	if(typeof(newLoanAmount) !== "number" || newLoanAmount < 0 || isNaN(newLoanAmount)) {
+		console.log("Bad input newLoanAmount to new loan");
+		newLoanAmount = 0;
+	}
+	if(typeof(newLoanRate) !== "number" || newLoanRate < 0 || isNaN(newLoanRate)) {
+		console.log("Bad input newLoanRate to new loan");
+		newLoanRate = 0;
+	}
 	
 	addLoan(newLoanAmount, newLoanRate); 
 }, false);
