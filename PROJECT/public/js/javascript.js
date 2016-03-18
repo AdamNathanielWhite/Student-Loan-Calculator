@@ -1,13 +1,13 @@
 console.log("javascript.js loaded");
 
 /* --- MANIPULATING HTML ELEMENTS ON THE PAGE. hide things, show data, etc --- */
-document.getElementById("refinanceCheckbox").addEventListener("click", function(){
+/*document.getElementById("refinanceCheckbox").addEventListener("click", function(){
 	if(document.getElementById("refinanceCheckbox").checked) {
 		document.getElementById("refinanceOptionDiv").hidden = false;
 	} else {
 		document.getElementById("refinanceOptionDiv").hidden = true;
 	}
-}, false);
+}, false);*/
 document.getElementById("forgivenessCheckbox").addEventListener("click", function(){
 	if(document.getElementById("forgivenessCheckbox").checked) {
 		document.getElementById("loanForgivenessHiddenInput").hidden = false;
@@ -48,13 +48,13 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var forgivenessYears = document.getElementById("forgivenessYears").value;
 	var extraPaymentOption = document.querySelector('input[name="extraPaymentGroup"]:checked').value; //See http://stackoverflow.com/a/15839451/2312949
 	var extraMonthlyPaymentAmount = document.getElementById("extraMonthlyPaymentAmount").value;
-	var refinanceCheckbox = document.getElementById("refinanceCheckbox").checked;
-	var refinanceAmount = document.getElementById("refinanceAmount").value;
-	var nYearsRefinance = document.getElementById("nYearsRefinance").value;
-	var refinanceInterestRate = document.getElementById("refinanceInterestRate").value;
+	var refinanceCheckbox = "false"; //document.getElementById("refinanceCheckbox").checked;
+	var refinanceAmount = 0; //document.getElementById("refinanceAmount").value;
+	var nYearsRefinance = 0; //document.getElementById("nYearsRefinance").value;
+	var refinanceInterestRate = 0; //document.getElementById("refinanceInterestRate").value;
 	var usingAutopay = document.getElementById("usingAutopay").checked;
 	var payOffOrder = document.getElementById("payOffOrder").value;
-	var newRepaymentPlan = document.getElementById("newRepaymentPlan").value;
+	var newRepaymentPlan = "standard"; //document.getElementById("newRepaymentPlan").value;
 
 	//TODO: Check these inputs. no negative numbers, text in numbers, blank, etc.
 	if (income == "" || typeof(Number(income)) !== "number" || income < 0 ) {
