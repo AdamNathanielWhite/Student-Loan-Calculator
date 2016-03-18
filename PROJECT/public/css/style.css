@@ -2,6 +2,7 @@ html, body{
 	margin:0px; 
 	padding:0px;
 	height: 100%;
+	background-color: #F7FDFF; /*#EBF4F7;*/
 }
 
 .body-wrapper {
@@ -90,14 +91,14 @@ html, body{
 	clear: both;
 	border-style: solid;
 	border-width: thin;
-	border-color: #ff6600;
-	background-color: #dd4400;
+	border-color: #006FA1; /*#ff6600;*/
+	background-color: #7BB1C9; /*#5793AD;*/ /*#0099DD;*/ /*#dd4400;*/
 	height: 18px;
 	padding: 5px;
 }
 .single-loan-row-locked {
-	border-color: #ffaa44;
-	background-color: #ff8844;
+	border-color: #44aff5;
+	background-color: #96D8E0;
 }
 .loan-amount {
 	margin-left: 3%;
