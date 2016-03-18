@@ -75,10 +75,9 @@ function playScenario() {
 	console.log("scenario is " + JSON.stringify(scenario, null, 2));
 	
 	future = {};
-	future = {"information": {}, "loans": [], "totalMonthlyPayment": [], "totalMonthlyPaymentAboveMinimums": []};
+	future = {"information": {"totalMonthlyPaymentBeginning": 0}, "loans": []};
 	future.information.totalMonthsInPaymentPlan = scenario.totalMonthsRemaining;
-	future.totalMonthlyPaymentAboveMinimums[0] = Number(scenario.extraMonthlyPaymentAmount);
-	future.totalMonthlyPayment[0] = Number(future.totalMonthlyPaymentAboveMinimums[0]);
+	future.information.totalMonthlyPaymentBeginning = Number(scenario.extraMonthlyPaymentAmount);
 	
 	
 	//initialize all loans
@@ -90,8 +89,12 @@ function playScenario() {
 		future.loans.push(newLoan);
 		console.log("Inserting new loan " + JSON.stringify(newLoan, null, 2));
 		
-		//increment the total payment. This may not be the best place for this code, init scenario?
-		future.totalMonthlyPayment[0] += Number(newLoan.monthlyAmounts[0].principlePayment) + Number(newLoan.monthlyAmounts[0].interestPayment);
+		// Add the payment to the initial total of payments. This may not be the best place for this code, init scenario?
+		var totalPaymentThisLoan = Number(newLoan.monthlyAmounts[0].principlePayment) + Number(newLoan.monthlyAmounts[0].interestPayment);
+		if ( totalPaymentThisLoan < 50 ) {
+			totalPaymentThisLoan = 50;
+		}
+		future.information.totalMonthlyPaymentBeginning += totalPaymentThisLoan; 
 	}
 	console.log("Initialized loans. future is " + JSON.stringify(future, null, 2));
 	
@@ -110,8 +113,7 @@ function playScenario() {
 		allPaidOff = true;
 		console.log("Beginning computations for month " + monthNum);
 		
-		var moneyRemainingThisMonth = future.totalMonthlyPayment[monthNum-1];
-		future.totalMonthlyPayment.push(Number(moneyRemainingThisMonth)); //carry monthly payment into next month. TODO: allow payments to vary over time.
+		var moneyRemainingThisMonth = future.information.totalMonthlyPaymentBeginning; //TODO: Allow for varying payments
 		
 		// Go through each loan and update it for this month
 		for(var j=0; j<future.loans.length; j++) {
@@ -130,7 +132,7 @@ function playScenario() {
 				//nextMonthLoanInfo.principleRemaining = Number(currentMonthLoanInfo.principleRemaining) + Number(currentMonthLoanInfo.interestPayment); //TODO: Capitalization event. Interest is stored separately, then added in a capitalization event.
 				nextMonthLoanInfo.principleRemaining = currentMonthLoanInfo.principleRemaining; //See previous todo about capitalization. This assumes a subsidized loan. 
 				defermentMonthsRemainingCountdown -= 1;
-				console.log("Month " + monthNum + " is in deferment. current principle is " + currentMonthLoanInfo.principleRemaining + " and money remaining is " + moneyRemainingThisMonth);
+				console.log("Month " + monthNum + " is in deferment. current principle is " + currentMonthLoanInfo.principleRemaining);
 			}
 			
 			// $50 minimum
@@ -152,7 +154,7 @@ function playScenario() {
 				console.log("Paid the minimum. The principle remaining now is " + nextMonthLoanInfo.principleRemaining + " We did pay down the principle by " + currentMonthLoanInfo.principlePayment);
 			} 
 			
-			//rounding errors
+			// correct rounding errors
 			if( nextMonthLoanInfo.principleRemaining > 0.0 && nextMonthLoanInfo.principleRemaining < 0.009) {
 				console.log("We have a rounding error. This loan has nothing remaining.");
 				nextMonthLoanInfo.principleRemaining = 0;
@@ -165,6 +167,13 @@ function playScenario() {
 				allPaidOff = false;
 			}
 			
+			// How much do we still have left over?
+			console.log("money remaining inside the for loop, before subtraction is " + moneyRemainingThisMonth + " We are iterating loan j=" + j);
+			moneyRemainingThisMonth -= currentMonthLoanInfo.principlePayment;
+			moneyRemainingThisMonth -= currentMonthLoanInfo.interestPayment;
+			if ( moneyRemainingThisMonth < 1 ) { moneyRemainingThisMonth = 0; } //float rounding errors
+			console.log("money remaining inside the for loop, after subtraction is " + moneyRemainingThisMonth);
+			
 			// How much do we owe next month?
 			//console.log("arg 2 is " + (future.information.totalMonthsInPaymentPlan-monthNum));
 			nextMonthLoanInfo.principlePayment = getLoanPrincipleMinimumPayment(nextMonthLoanInfo.principleRemaining, future.information.totalMonthsInPaymentPlan-monthNum, scenario.plan, future.loans[j].rate); //monthNum off by 1?
@@ -172,25 +181,35 @@ function playScenario() {
 			console.log("pushing next month loan " + JSON.stringify(nextMonthLoanInfo, null, 2) + "\n to future.loans.monthlyAmounts " + JSON.stringify(future.loans[j].monthlyAmounts, null, 2));
 		}
 		
-		/*//apply leftover money to the worst loan
+		//apply leftover money to the worst loan.
+		console.log("leftover money at the beginning of worst loan payment is " + moneyRemainingThisMonth);
 		if( (moneyRemainingThisMonth > 0) && (future.loans.length > 0)) {
 			var worstLoanIndex = getWorstLoanIndex(future.loans, scenario);
-			var worstLoan = future.loans[worstLoanIndex].monthlyAmounts[future.loans[worstLoanIndex].monthlyAmounts.length-1];
-			if(worstLoan.principleRemaining > 1) { //necessary because the function getWorstLoanIndex can't return no result. 1 instead of 0, for rounding.
-				worstLoan.principleRemaining -= moneyRemainingThisMonth;
-				console.log("The worst loan is loan# " + worstLoanIndex + " We paid all the remaining money $" + moneyRemainingThisMonth + " to the loan, and the principle is now " + worstLoan.principleRemaining);
-				moneyRemainingThisMonth -= moneyRemainingThisMonth;
+			var worstLoanNextMonth = future.loans[worstLoanIndex].monthlyAmounts[future.loans[worstLoanIndex].monthlyAmounts.length-1];
+			var previousPrincipleRemaining = worstLoanNextMonth.principleRemaining;
+			var previousPrinciplePayment = worstLoanNextMonth.principlePayment;
+			var extraPayment = 0;
+			if ( (worstLoanNextMonth.principleRemaining > 0) && (worstLoanNextMonth.principleRemaining < moneyRemainingThisMonth) ) {
+				extraPayment = previousPrinciplePayment + worstLoanNextMonth.principleRemaining;
+				console.log("worst first");
 			}
-		}*/
-		
+			else if(worstLoanNextMonth.principleRemaining > 0) {
+				extraPayment = moneyRemainingThisMonth;
+				console.log("worst second");
+			}
+			worstLoanNextMonth.principleRemaining -= extraPayment;
+			worstLoanNextMonth.principlePayment += extraPayment;
+			moneyRemainingThisMonth = previousPrincipleRemaining - extraPayment;
+			console.log("The worst loan is loan# " + worstLoanIndex + " We paid all the remaining money of $" + extraPayment + " to the loan. The principle remaining went from " + previousPrincipleRemaining + " to " + worstLoanNextMonth.principleRemaining);
+			console.log("The priciple payment went from " + previousPrinciplePayment + " to " + worstLoanNextMonth.principlePayment);
+		}
 		//error checking. leftover=$0
 		console.log("leftover money this month is " + moneyRemainingThisMonth + " (should be $0)");
 		if(moneyRemainingThisMonth < 0) {console.log("ERROR!! We are left with a negative amount of money this month!");}
 		
 		console.log("Intermediate future after month " + monthNum + " is " + JSON.stringify(future, null, 2));
 	}
-	
-	console.log(future);
+
 	console.log("Complete future is " + JSON.stringify(future, null, 2));
 	
 	displayFuture(future);

@@ -149,14 +149,16 @@ function displayFuture(future) {
 	//find the max and min payment amounts
 	var highestPayment = 50;
 	var lowestPayment = 999999;
-	for(var t = 0; t<future.totalMonthlyPayment.length; t++) {
-		if( future.totalMonthlyPayment[t] > highestPayment ) {
+	/*for(var t = 0; t<future.totalMonthlyPaymentBeginning.length; t++) {
+		if( future.totalMonthlyPaymentBeginning > highestPayment ) {
 			highestPayment = future.totalMonthlyPayment[t]; 
 		}
-		if( future.totalMonthlyPayment[t] < lowestPayment ) {
+		if( future.totalMonthlyPaymentBeginning < lowestPayment ) {
 			lowestPayment = future.totalMonthlyPayment[t]; 
 		}
-	}
+	}*/
+	//TODO: Finding the max/min payments is broken. It needs to be in the for for loop above.
+	console.log("TODO: Finding the max/min payments is broken. It needs to be in the for for loop above.");
 	var stringPayments = "";
 	if ( lowestPayment === highestPayment ) {
 		stringPayments = "Your monthly payments are $" + highestPayment.toFixed(2);
