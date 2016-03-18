@@ -138,13 +138,33 @@ function displayFuture(future) {
 	
 	//convert number of months of payoff to an actual date
 	var payoffMonth = Math.trunc(todaysMonth + finalPayoffMonthNum % 12);
-	var payoffYear = Math.trunc(todaysYear + finalPayoffMonthNum/12);
+	var payoffYear = Math.trunc(todaysYear + finalPayoffMonthNum / 12);
 	while ( payoffMonth > 12 ) {
 		payoffMonth -= 12;
 		payoffYear += 1;
 	}
 	var payoffDateString = payoffMonth + "/" + payoffYear;
 	console.log("Payoff MM/YYYY is " + payoffDateString);
+	
+	//find the max and min payment amounts
+	var highestPayment = 50;
+	var lowestPayment = 999999;
+	for(var t = 0; t<future.totalMonthlyPayment.length; t++) {
+		if( future.totalMonthlyPayment[t] > highestPayment ) {
+			highestPayment = future.totalMonthlyPayment[t]; 
+		}
+		if( future.totalMonthlyPayment[t] < lowestPayment ) {
+			lowestPayment = future.totalMonthlyPayment[t]; 
+		}
+	}
+	var stringPayments = "";
+	if ( lowestPayment === highestPayment ) {
+		stringPayments = "Your monthly payments are $" + highestPayment.toFixed(2);
+	} else {
+		stringPayments = "The highest monthly payment is $" + highestPayment.toFixed(2) + " and the lowest monthly payment is $" + lowestPayment.toFixed(2);
+	}
+	console.log(stringPayments);
+	
 	
 	//don't let the user see null data
 	if(totalSumOfPayments === 0) {
@@ -153,6 +173,7 @@ function displayFuture(future) {
 	
 	//output data to the user
 	document.getElementById("loanPayoffDateOutput").value = payoffDateString;
-	document.getElementById("totalOfPaymentsOutput").value = "$" + totalSumOfPayments; 
+	document.getElementById("totalOfPaymentsOutput").value = "$" + totalSumOfPayments.toFixed(2); 
+	document.getElementById("highestLowestMonthlyPayments").value = stringPayments;
 	document.getElementById("futureResults").removeAttribute("hidden");
 }
