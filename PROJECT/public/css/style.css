@@ -1,6 +1,14 @@
 html, body{
 	margin:0px; 
 	padding:0px;
+	height: 100%;
+}
+
+.body-wrapper {
+	min-height: 100%; 
+	height: auto !important; 
+	height: 100%; 
+	margin: 0 auto -40px;
 }
 
 .header-wrapper {
@@ -9,6 +17,11 @@ html, body{
     position: relative;
     width: 100%;
     background: #eeeeee;
+}
+
+#footer {
+	height: 34px;
+	padding: 4px;
 }
 
 .header-content {
