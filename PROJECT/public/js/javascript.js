@@ -141,13 +141,14 @@ document.getElementById("submitButton").addEventListener("click", function() {
 }, false);
 
 function displayFuture(future) {
-	/*//iterate through each loan and sum up all the payments
+	//iterate through each loan and sum up all the payments
 	var totalSumOfPayments = 0;
 	var finalPayoffMonthNum = 0;
 	for(var loanNum=0; loanNum<future.loans.length; loanNum++ ) {
-		for(var monthNum=0; monthNum<future.loans[loanNum].monthlyAmounts.length; monthNum++ ) {
-			totalSumOfPayments += future.loans[loanNum].monthlyAmounts[monthNum].principlePayment;
-			totalSumOfPayments += future.loans[loanNum].monthlyAmounts[monthNum].interestPayment;
+		var monthlyPayment
+		for(var monthNum=0; monthNum<future.loans[loanNum].month.length; monthNum++ ) {
+			totalSumOfPayments += future.loans[loanNum].month[monthNum].monthPrinciplePlusInterest;
+			totalSumOfPayments += future.loans[loanNum].month[monthNum].monthExtraPayment;
 			
 			//find the last month
 			if(finalPayoffMonthNum < monthNum ) {
@@ -168,7 +169,10 @@ function displayFuture(future) {
 	var payoffDateString = payoffMonth + "/" + payoffYear;
 	console.log("Payoff MM/YYYY is " + payoffDateString);
 	
-	//find the max and min payment amounts
+	// Output the payment
+	var stringPayments = "Your monthly payments are $" + future.information.totalCombinedMonthlyPayment.toFixed(2);
+	//TODO: Allow the payment to vary over time
+	/*// Find the max and min payment amounts
 	var highestPayment = 50;
 	var lowestPayment = 999999;
 	for(var t = 0; t<future.totalMonthlyPayment.length; t++) {
@@ -184,7 +188,7 @@ function displayFuture(future) {
 		stringPayments = "Your monthly payments are $" + highestPayment.toFixed(2);
 	} else {
 		stringPayments = "The highest monthly payment is $" + highestPayment.toFixed(2) + " and the lowest monthly payment is $" + lowestPayment.toFixed(2);
-	}
+	}*/
 	console.log(stringPayments);
 	
 	
@@ -197,5 +201,5 @@ function displayFuture(future) {
 	document.getElementById("loanPayoffDateOutput").value = payoffDateString;
 	document.getElementById("totalOfPaymentsOutput").value = "$" + totalSumOfPayments.toFixed(2); 
 	document.getElementById("highestLowestMonthlyPayments").value = stringPayments;
-	document.getElementById("futureResults").removeAttribute("hidden");*/
+	document.getElementById("futureResults").removeAttribute("hidden");
 }
