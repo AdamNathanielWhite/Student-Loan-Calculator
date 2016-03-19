@@ -43,6 +43,24 @@ document.getElementById("submitLoanButton").addEventListener("click", function()
 
 /* --- UPDATING AND SUBMITTING INPUTS --- */
 // submitButton sends all inputs to the dataHandler 
+function getDiscretionaryIncome(income, state/*, householdSize*/) {
+	if (income === "" || typeof(Number(income)) !== "number" || income < 0 ) {
+		//Non-essential input, don't require it. Set to maximum instead.
+		income = 100000;
+	}
+	income = Number(income);
+	
+	var discretionaryIncome = income;
+	if(state == "Hawaii" || state == "Alaska") {
+		//TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+		//Alaska/Hawaii information - https://aspe.hhs.gov/poverty-guidelines
+		console.log("TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/");
+	} else { //lower 48
+		//TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+		console.log("TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/");
+	}
+	return discretionaryIncome;
+}
 document.getElementById("submitButton").addEventListener("click", function() {
 	//Pull input values from the html document 
 	var plan = document.getElementById("planType").value;
@@ -66,11 +84,6 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var newRepaymentPlan = "standard"; //document.getElementById("newRepaymentPlan").value;
 
 	//TODO: Check these inputs. no negative numbers, text in numbers, blank, etc.
-	if (income == "" || typeof(Number(income)) !== "number" || income < 0 ) {
-		//Non-essential input, don't require it. Set to maximum instead.
-		income = 100000;
-	}
-	income = Number(income);
 	
 	// Extra payment
 	if(extraPaymentOption == "extraPaymentNone") {
@@ -107,6 +120,7 @@ document.getElementById("submitButton").addEventListener("click", function() {
 		"defermentMonth": "' + defermentMonth +'", \
 		"defermentYear": "' + defermentYear + '", \
 		"income": "' + income + '", \
+		"discretionaryIncome": "' + getDiscretionaryIncome(income) + '", \
 		"stateResidency": "' + stateResidency + '", \
 		"forgivenessCheckbox": "' + forgivenessCheckbox + '", \
 		"forgivenessYears": "' + forgivenessYears + '", \
@@ -127,7 +141,7 @@ document.getElementById("submitButton").addEventListener("click", function() {
 }, false);
 
 function displayFuture(future) {
-	//iterate through each loan and sum up all the payments
+	/*//iterate through each loan and sum up all the payments
 	var totalSumOfPayments = 0;
 	var finalPayoffMonthNum = 0;
 	for(var loanNum=0; loanNum<future.loans.length; loanNum++ ) {
@@ -183,5 +197,5 @@ function displayFuture(future) {
 	document.getElementById("loanPayoffDateOutput").value = payoffDateString;
 	document.getElementById("totalOfPaymentsOutput").value = "$" + totalSumOfPayments.toFixed(2); 
 	document.getElementById("highestLowestMonthlyPayments").value = stringPayments;
-	document.getElementById("futureResults").removeAttribute("hidden");
+	document.getElementById("futureResults").removeAttribute("hidden");*/
 }

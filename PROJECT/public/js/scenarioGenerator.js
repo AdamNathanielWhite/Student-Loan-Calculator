@@ -29,6 +29,9 @@ function evaluateAll(scenario) {
 
 //The 'worst' loan is the one that the user should pay down next
 function getWorstLoanIndex(loans, scenario) {
+	console.log("BROKED!! This needs to be changed to reflect the new loan month json");
+	return 0;
+	//BROKED!! This needs to be changed to reflect the new loan month json
 	//console.log("getWorstLoanIndex()");
 	var worstLoanIndex = 0;
 	
@@ -122,12 +125,14 @@ function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaini
 	
 	return principlePayment;
 }*/
-function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentBool) {
+function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentMonthsRemainingCountdown) {
 	//console.log("getLoanExpectedPaymentOnPlan() Inputs are: (complete this line)");
-	var loanPayment = {"monthTotalPrincipleInterest": 0, "monthPrinciple": 0, "monthInterest": 0, "monthMinimumExpectedPayment": 0};
+	var loanPayment = {"beginningPrincipleAmount": currentPrincipleRemaining, "monthPrinciplePlusInterest": 0, "monthPrinciple": 0, "monthInterest": 0, 
+			"monthMinimumPayment": 0, "monthExtraPayment": 0};
 	
 	//check if this loan is paid off
-	if (currentPrincipleRemaining === 0 ) {
+	if (currentPrincipleRemaining < 0.009 ) { //approximate zero for rounding errors
+		loanPayment.currentPrincipleRemaining = 0;
 		return loanPayment;
 	}
 	
@@ -142,32 +147,33 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 	
 	//Find total payment
 	var ratePerMonthlyPeriod = (interestRate / 100) / 12; //We are assuming all months are exact same time length. //Reference: http://www.debtfreeadventure.com/how-student-loan-interest-is-calculated-and-why-it-varies-from-month-to-month/
-	loanPayment.monthTotalPrincipleInterest = currentPrincipleRemaining / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), monthsRemaining)))/ratePerMonthlyPeriod);
+	loanPayment.monthPrinciplePlusInterest = currentPrincipleRemaining / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), monthsRemaining)))/ratePerMonthlyPeriod);
 	
 	//Find the interest this month
 	//var irf = ratePerMonthlyPeriod / 365.25;
 	loanPayment.monthInterest = currentPrincipleRemaining * ratePerMonthlyPeriod;
 	
 	//There is a $50 minimum payment
-	if(loanPayment.monthTotalPrincipleInterest < 50) {
+	if(loanPayment.monthPrinciplePlusInterest < 50) {
 		if ( (currentPrincipleRemaining + loanPayment.monthInterest) < 50) { // this is the final payment
-			loanPayment.monthTotalPrincipleInterest = currentPrincipleRemaining + loanPayment.monthInterest;
+			loanPayment.monthPrinciplePlusInterest = currentPrincipleRemaining + loanPayment.monthInterest;
 			loanPayment.monthPrinciple = currentPrincipleRemaining;
 		} else { //$50 minimum
-			loanPayment.monthTotalPrincipleInterest = 50;
-			//loanPayment.monthPrinciple = loanPayment.monthTotalPrincipleInterest - loanPayment.monthInterest;
+			loanPayment.monthPrinciplePlusInterest = 50;
+			//loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
 		}
 	}
 	
 	//Find the principle expected payment this month
-	loanPayment.monthPrinciple = loanPayment.monthTotalPrincipleInterest - loanPayment.monthInterest;
+	loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
 	
-	if(defermentBool) { //Deferment
-		loanPayment.monthMinimumExpectedPayment = 0;
+	if(defermentMonthsRemainingCountdown > 0) { //Deferment
+		defermentMonthsRemainingCountdown -= 1; //decrement
+		loanPayment.monthMinimumPayment = 0;
 		loanPayment.monthPrinciple = 0; //TODO: This assumes a subsidized loan. Not all loans are subsidized.
-		loanPayment.monthTotalPrincipleInterest = loanPayment.monthInterest;
+		loanPayment.monthPrinciplePlusInterest = loanPayment.monthInterest;
 	} else if(paymentPlan === "standard") {
-		loanPayment.monthMinimumExpectedPayment = loanPayment.monthTotalPrincipleInterest;
+		loanPayment.monthMinimumPayment = loanPayment.monthPrinciplePlusInterest;
 	} else if(paymentPlan === "ibr") {
 		//TODO: Payment plan
 		console.log("TODO");
@@ -190,7 +196,7 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 			"\n monthsRemaining=" + monthsRemaining + 
 			"\n paymentPlan=" + paymentPlan + 
 			"\n discretionaryIncome=" + discretionaryIncome + 
-			"\n defermentBool=" + defermentBool + 
+			"\n defermentMonthsRemainingCountdown=" + defermentMonthsRemainingCountdown + 
 			"\n The monthly output is: \n" + JSON.stringify(loanPayment, null, 2));
 	return loanPayment;
 }
