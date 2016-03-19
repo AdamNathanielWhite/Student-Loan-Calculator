@@ -63,7 +63,7 @@ function getWorstLoanIndex(loans, scenario) {
 	return worstLoanIndex;
 }
 
-//Find the interest and principle payments that are required this month
+/*//Find the interest and principle payments that are required this month
 function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
 	//TODO: delete the input monthsRemaining. it isn't used.
 	console.log("getLoanInterestMinimumPayment() Inputs are: " + currentPrincipleRemaining + "  " + monthsRemaining + "  " + paymentPlan + "  " + interestRate);
@@ -91,8 +91,8 @@ function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemainin
 	
 	return interestPayment;
 }
-function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
-	console.log("getLoanPrincipleMinimumPayment()");
+function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaining, interestRate) {
+	//console.log("getLoanPrincipleMinimumPayment()");
 	console.log("getLoanPrincipleMinimumPayment() Inputs are: " + currentPrincipleRemaining + "  " + monthsRemaining + "  " + paymentPlan + "  " + interestRate);
 	
 	//check if this loan is paid off
@@ -121,4 +121,76 @@ function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaini
 	}
 	
 	return principlePayment;
+}*/
+function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentBool) {
+	//console.log("getLoanExpectedPaymentOnPlan() Inputs are: (complete this line)");
+	var loanPayment = {"monthTotalPrincipleInterest": 0, "monthPrinciple": 0, "monthInterest": 0, "monthMinimumExpectedPayment": 0};
+	
+	//check if this loan is paid off
+	if (currentPrincipleRemaining === 0 ) {
+		return loanPayment;
+	}
+	
+	//Past expiration date for loan
+	if (monthsRemaining <= 0) {
+		if(currentPrincipleRemaining > 0) {
+			console.log("ERROR?? This loan is past its expiration date, but there is still $" + currentPrincipleRemaining + " left!!");
+		}
+		console.log("This loan is past its expiration date. It is forgiven.");
+		return loanPayment;
+	}
+	
+	//Find total payment
+	var ratePerMonthlyPeriod = (interestRate / 100) / 12; //We are assuming all months are exact same time length. //Reference: http://www.debtfreeadventure.com/how-student-loan-interest-is-calculated-and-why-it-varies-from-month-to-month/
+	loanPayment.monthTotalPrincipleInterest = currentPrincipleRemaining / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), monthsRemaining)))/ratePerMonthlyPeriod);
+	
+	//Find the interest this month
+	//var irf = ratePerMonthlyPeriod / 365.25;
+	loanPayment.monthInterest = currentPrincipleRemaining * ratePerMonthlyPeriod;
+	
+	//There is a $50 minimum payment
+	if(loanPayment.monthTotalPrincipleInterest < 50) {
+		if ( (currentPrincipleRemaining + loanPayment.monthInterest) < 50) { // this is the final payment
+			loanPayment.monthTotalPrincipleInterest = currentPrincipleRemaining + loanPayment.monthInterest;
+			loanPayment.monthPrinciple = currentPrincipleRemaining;
+		} else { //$50 minimum
+			loanPayment.monthTotalPrincipleInterest = 50;
+			//loanPayment.monthPrinciple = loanPayment.monthTotalPrincipleInterest - loanPayment.monthInterest;
+		}
+	}
+	
+	//Find the principle expected payment this month
+	loanPayment.monthPrinciple = loanPayment.monthTotalPrincipleInterest - loanPayment.monthInterest;
+	
+	if(defermentBool) { //Deferment
+		loanPayment.monthMinimumExpectedPayment = 0;
+		loanPayment.monthPrinciple = 0; //TODO: This assumes a subsidized loan. Not all loans are subsidized.
+		loanPayment.monthTotalPrincipleInterest = loanPayment.monthInterest;
+	} else if(paymentPlan === "standard") {
+		loanPayment.monthMinimumExpectedPayment = loanPayment.monthTotalPrincipleInterest;
+	} else if(paymentPlan === "ibr") {
+		//TODO: Payment plan
+		console.log("TODO");
+	} else if(paymentPlan === "icr") {
+		//TODO: Payment plan
+		console.log("TODO");
+	} else if(paymentPlan === "paye") {
+		//TODO: Payment plan
+		console.log("TODO");
+	} else if(paymentPlan === "repaye") {
+		//TODO: Payment plan
+		console.log("TODO");
+	} else {
+		console.log("ERROR: The payment plan was not in the list");
+	}
+	
+	console.log("getLoanExpectedPaymentOnPlan() Based on the inputs: " + 
+			"\ncurrentPrincipleRemaining=" + currentPrincipleRemaining + 
+			"\n interestRate=" + interestRate + 
+			"\n monthsRemaining=" + monthsRemaining + 
+			"\n paymentPlan=" + paymentPlan + 
+			"\n discretionaryIncome=" + discretionaryIncome + 
+			"\n defermentBool=" + defermentBool + 
+			"\n The monthly output is: \n" + JSON.stringify(loanPayment, null, 2));
+	return loanPayment;
 }

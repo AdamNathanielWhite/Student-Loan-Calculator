@@ -42,3 +42,19 @@ testGetLoanInterestMinimumPayment();
 testGetLoanPrincipleMinimumPayment();
 testCombinedMinimumPayment();
 */
+
+/*function testGetLoanPaymentInformation() {
+	var currentPrincipleRemaining = 10000;
+	var interestRate = 4;
+	var monthsRemaining = 120;
+	var paymentPlan = "standard";
+	var discretionaryIncome = 20000;
+	var defermentBool = true;
+	//console.log("testGetLoanPaymentInformation() Inputs are principle " + currentPrincipleRemaining + " interest rate " + interestRate + 
+	//		" months remaining " + monthsRemaining + " payment plan " + paymentPlan + " discretionary income " + discretionaryIncome);
+	
+	var returnedInfo = getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentBool);
+	
+	console.log("testGetLoanPaymentInformation() output is " + JSON.stringify(returnedInfo, null, 2));
+}
+testGetLoanPaymentInformation();*/
