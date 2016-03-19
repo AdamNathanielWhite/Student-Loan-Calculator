@@ -74,8 +74,9 @@ function playScenario() {
 	console.log("------------------------- playScenario()---------------------");
 	console.log("scenario is " + JSON.stringify(scenario, null, 2));
 	
-	future = {"information": {"beginningExtraPayment": scenario.extraMonthlyPaymentAmount, "totalMonthsInPaymentPlan": scenario.totalMonthsRemaining, 
-		"totalCombinedMonthlyPayment": 0}, "loans": []};
+	future = {"information": {"beginningExtraPayment": Number(scenario.extraMonthlyPaymentAmount), "totalMonthsInPaymentPlan": Number(scenario.totalMonthsRemaining), 
+		"totalInitialPrinciple": 0, "totalInitialMonthlyPayment": 0}, 
+		"loans": []};
 	
 	//initialize all loans
 	for(var i=0; i<listLoans.length; i++) {
@@ -90,8 +91,15 @@ function playScenario() {
 		var newLoan = {"rate": interestRate, "startingAmount": listLoans[i].amount, "nextPrinciple": listLoans[i].amount, "month": []};
 		console.log("New loan " + JSON.stringify(newLoan, null, 2));
 		future.loans.push(newLoan);
+		
+		//find the initial payment
+		var beginningExpectedPaymentLoan = getLoanPaymentInformation(newLoan.startingAmount, newLoan.rate, future.information.totalMonthsInPaymentPlan, 
+				scenario.plan, scenario.discretionaryIncome, 0).monthPrinciplePlusInterest;
+		future.information.totalInitialMonthlyPayment += beginningExpectedPaymentLoan;
+		future.information.totalInitialPrinciple += newLoan.startingAmount;
 	}
-	console.log("Initialized loans. future is " + JSON.stringify(future, null, 2));
+	console.log("The beginning total combined principle is " + future.information.totalInitialPrinciple + 
+			" and the beginning monthly expected payment is " + future.information.totalInitialMonthlyPayment + " assuming no deferment.");
 	
 	//Deferment
 	var defermentMonthsRemainingCountdown = 0;
@@ -99,6 +107,7 @@ function playScenario() {
 		defermentMonthsRemainingCountdown = (scenario.defermentMonth - todaysMonth) + ((scenario.defermentYear - todaysYear) * 12 ); 
 	}
 	console.log("Number of months from today that we are in deferment is " + defermentMonthsRemainingCountdown);
+	console.log("Initialized future. future is " + JSON.stringify(future, null, 2));
 	
 	//IMPORTANT: Iterate through each month and calculate everything
 	var allPaidOff = false;
@@ -112,11 +121,8 @@ function playScenario() {
 		for(var j=0; j<future.loans.length; j++) {
 			var currentLoan = future.loans[j];
 			var currentMonthLoan = getLoanPaymentInformation(currentLoan.nextPrinciple, currentLoan.rate, (future.information.totalMonthsInPaymentPlan - monthNum), 
-					scenario.plan, scenario.discretionaryIncome, defermentMonthsRemainingCountdown);
-			
-			//Decrement deferment months
-			console.log("deferment months remaining is " + defermentMonthsRemainingCountdown);
-			defermentMonthsRemainingCountdown -= 1; //decrement
+					scenario.plan, scenario.discretionaryIncome, defermentMonthsRemainingCountdown);		
+
 			
 			console.log("Pushing new month-loan " + JSON.stringify(currentMonthLoan, null, 2));
 			future.loans[j].month.push(currentMonthLoan);
@@ -127,12 +133,10 @@ function playScenario() {
 		}
 		
 		//Pay extra on loan
-		if(monthNum === 0) { //initially set this
-			future.information.totalCombinedMonthlyPayment = Number(totalAmountSpentThisMonth) + Number(future.information.beginningExtraPayment);
-		}
-		var extraMoney = future.information.totalCombinedMonthlyPayment - totalAmountSpentThisMonth;
-		console.log("extra money at end of month is " + extraMoney + " = " + future.information.totalCombinedMonthlyPayment + " - " + totalAmountSpentThisMonth);
-		if( future.loans.length > 0 && extraMoney > 0) { 
+		var extraMoney = future.information.totalInitialMonthlyPayment + future.information.beginningExtraPayment - totalAmountSpentThisMonth;
+		console.log("extra money at end of month is " + extraMoney + " = " + future.information.totalInitialMonthlyPayment + " - " + 
+				future.information.beginningExtraPayment + " - " + totalAmountSpentThisMonth);
+		if( future.loans.length > 0 && extraMoney > 0 && defermentMonthsRemainingCountdown <= 0) { 
 			var worstLoanIndex = getWorstLoanIndex(future.loans, scenario);
 			var worstLoanMonth = future.loans[worstLoanIndex].month[monthNum];
 			console.log("worst loan month is " + JSON.stringify(worstLoanMonth, null, 2));
@@ -161,6 +165,7 @@ function playScenario() {
 			var currentMonthLoan = future.loans[j].month[monthNum];
 			console.log("current month loan for finding next month principle is " + JSON.stringify(currentMonthLoan, null, 2));
 			var nextMonthPrincipleRemaining = currentMonthLoan.beginningPrincipleAmount - currentMonthLoan.monthPrinciple - currentMonthLoan.monthExtraPayment;
+			if(nextMonthPrincipleRemaining < 0.009) { nextMonthPrincipleRemaining = 0; }
 			future.loans[j].nextPrinciple = nextMonthPrincipleRemaining;
 			console.log("next month principle is " + nextMonthPrincipleRemaining + " = " + currentMonthLoan.beginningPrincipleAmount + " - " + currentMonthLoan.monthPrinciple + " - " + currentMonthLoan.monthExtraPayment);
 			
@@ -173,9 +178,11 @@ function playScenario() {
 		console.log(future);
 		console.log("Intermediate future after month " + monthNum + " is " + JSON.stringify(future, null, 2));
 		monthNum += 1;
+		defermentMonthsRemainingCountdown -= 1; //decrement deferment
 
 		//debugging, only see first few months:
-		//if(monthNum >= 3) {break;}
+		//if(monthNum >= 2) {break;}
+		//alert("month " + monthNum);
 	}
 			
 	console.log("Complete future is " + JSON.stringify(future, null, 2));
