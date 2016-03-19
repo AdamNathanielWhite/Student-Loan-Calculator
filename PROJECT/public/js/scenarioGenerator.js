@@ -29,7 +29,7 @@ function evaluateAll(scenario) {
 
 //The 'worst' loan is the one that the user should pay down next
 function getWorstLoanIndex(loans, scenario) {
-	console.log("BROKED!! This needs to be changed to reflect the new loan month json");
+	console.log("getWorstLoanIndex() is BROKED!! This needs to be changed to reflect the new loan month json");
 	return 0;
 	//BROKED!! This needs to be changed to reflect the new loan month json
 	//console.log("getWorstLoanIndex()");
@@ -126,7 +126,6 @@ function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaini
 	return principlePayment;
 }*/
 function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentMonthsRemainingCountdown) {
-	//console.log("getLoanExpectedPaymentOnPlan() Inputs are: (complete this line)");
 	var loanPayment = {"beginningPrincipleAmount": currentPrincipleRemaining, "monthPrinciplePlusInterest": 0, "monthPrinciple": 0, "monthInterest": 0, 
 			"monthMinimumPayment": 0, "monthExtraPayment": 0};
 	
@@ -158,22 +157,27 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 		if ( (currentPrincipleRemaining + loanPayment.monthInterest) < 50) { // this is the final payment
 			loanPayment.monthPrinciplePlusInterest = currentPrincipleRemaining + loanPayment.monthInterest;
 			loanPayment.monthPrinciple = currentPrincipleRemaining;
+			console.log("Final payment. principle+interest=" + loanPayment.monthPrinciplePlusInterest + " and principle=" + loanPayment.monthPrinciple);
 		} else { //$50 minimum
 			loanPayment.monthPrinciplePlusInterest = 50;
 			//loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
+			console.log("Bumping up to $50 minimum payment. principle+interest=" + loanPayment.monthPrinciplePlusInterest);
 		}
 	}
 	
 	//Find the principle expected payment this month
 	loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
+	console.log("principle=" + loanPayment.monthPrinciple);
 	
 	if(defermentMonthsRemainingCountdown > 0) { //Deferment
 		defermentMonthsRemainingCountdown -= 1; //decrement
 		loanPayment.monthMinimumPayment = 0;
 		loanPayment.monthPrinciple = 0; //TODO: This assumes a subsidized loan. Not all loans are subsidized.
 		loanPayment.monthPrinciplePlusInterest = loanPayment.monthInterest;
+		console.log("deferred. principle=" + loanPayment.monthPrinciple);
 	} else if(paymentPlan === "standard") {
 		loanPayment.monthMinimumPayment = loanPayment.monthPrinciplePlusInterest;
+		console.log("standard");
 	} else if(paymentPlan === "ibr") {
 		//TODO: Payment plan
 		console.log("TODO");

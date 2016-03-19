@@ -104,7 +104,6 @@ function playScenario() {
 	var allPaidOff = false;
 	var monthNum = 0;
 	while(!allPaidOff) {
-		monthNum += 1;
 		allPaidOff = true;
 		var totalAmountSpentThisMonth = 0;
 		console.log("Beginning computations for month " + monthNum);
@@ -121,14 +120,15 @@ function playScenario() {
 			totalAmountSpentThisMonth += paidDownPrincipleAmount;
 		}
 		
-		//Pay extra on loan
+		/*//Pay extra on loan
 		if(monthNum === 0) { //initially set this
 			future.information.totalCombinedMonthlyPayment = totalAmountSpentThisMonth + future.information.beginningExtraPayment;
 		}
 		var extraMoney = future.information.beginningExtraPayment - totalAmountSpentThisMonth;
-		if( future.loans.length > 0) { bug somewhere around here. we are getting NaN for worstLoanMonth.monthExtraPayment
+		if( future.loans.length > 0) { 
 			var worstLoanIndex = getWorstLoanIndex(future.loans, scenario);
 			var worstLoanMonth = future.loans[worstLoanIndex].month[future.loans[worstLoanIndex].month.length-1];
+			console.log("worst loan month is " + JSON.stringify(worstLoanMonth, null, 2));
 			var principleRemaining = worstLoanMonth.beginningPrinciple - worstLoanMonth.monthPrinciple; 
 			if( principleRemaining > extraMoney) {
 				worstLoanMonth.monthExtraPayment = extraMoney; 
@@ -136,13 +136,15 @@ function playScenario() {
 				worstLoanMonth.monthExtraPayment = principleRemaining; //math wrong?? worstLoanMonth.monthPrinciple - worstLoanMonth.beginningPrinciple;
 			}
 			console.log("The worst loan is loan# " + worstLoanIndex + " We paid $" + worstLoanMonth.monthExtraPayment + " to the loan, and the principle is now " + (principleRemaining - worstLoanMonth.monthExtraPayment));
-		}
+		}*/
 		
 		//Set up the principle amount for the next month
 		for(var j=0; j<future.loans.length; j++) {
-			var currentLoanMonth = future.loans[j].month[future.loans[j].month.length-1];
-			var nextMonthPrincipleRemaining = currentLoanMonth.beginningPrinciple - currentLoanMonth.monthPrinciple - currentLoanMonth.monthExtraPayment;
+			var currentMonthLoan = future.loans[j].month[monthNum];
+			console.log("current month loan for finding next month principle is " + JSON.stringify(currentMonthLoan, null, 2));
+			var nextMonthPrincipleRemaining = currentMonthLoan.beginningPrincipleAmount - currentMonthLoan.monthPrinciple - currentMonthLoan.monthExtraPayment;
 			future.loans[j].nextPrinciple = nextMonthPrincipleRemaining;
+			console.log("next month principle is " + nextMonthPrincipleRemaining + " = " + currentMonthLoan.beginningPrincipleAmount + " - " + currentMonthLoan.monthPrinciple + " - " + currentMonthLoan.monthExtraPayment);
 			
 			//Are all the loans paid off?
 			if( nextMonthPrincipleRemaining > 0 ) {
@@ -152,6 +154,7 @@ function playScenario() {
 		
 		console.log(future);
 		console.log("Intermediate future after month " + monthNum + " is " + JSON.stringify(future, null, 2));
+		monthNum += 1;
 	}
 			
 	console.log("Complete future is " + JSON.stringify(future, null, 2));
