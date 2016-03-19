@@ -71,6 +71,31 @@ function getWorstLoanIndex(loans, scenario) {
 	return worstLoanIndex;
 }
 
+// Determine the minimum allowed amount under the user's plan
+function getExpectedMinimumTotalPayment(plan) {
+	
+	//SEE THIS WEBSITE FOR MINIMUMS PER PLAN: http://www.finaid.org/loans/repayment.phtml
+	
+	if(plan === "standard") {
+		return 50;
+	} else if(plan === "ibr") {
+		//TODO: Minimum
+		console.log("TODO");
+	} else if(plan === "icr") {
+		//TODO: Minimum
+		console.log("TODO");
+	} else if(plan === "paye") {
+		//TODO: Minimum
+		console.log("TODO");
+	} else if(plan === "repaye") {
+		//TODO: Minimum
+		console.log("TODO");
+	} else {
+		console.log("ERROR: The payment plan was not in the list. string is " + plan);
+		return 50;
+	}
+}
+
 /*//Find the interest and principle payments that are required this month
 function getLoanInterestMinimumPayment(currentPrincipleRemaining, monthsRemaining, paymentPlan, interestRate) {
 	//TODO: delete the input monthsRemaining. it isn't used.
@@ -157,7 +182,7 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 	//var irf = ratePerMonthlyPeriod / 365.25;
 	loanPayment.monthInterest = currentPrincipleRemaining * ratePerMonthlyPeriod;
 	
-	//There is a $50 minimum payment
+	/*//There is a $50 minimum payment //SEE THIS WEBSITE FOR MINIMUMS PER PLAN: http://www.finaid.org/loans/repayment.phtml
 	if(loanPayment.monthPrinciplePlusInterest < 50) {
 		if ( (currentPrincipleRemaining + loanPayment.monthInterest) < 50) { // this is the final payment
 			loanPayment.monthPrinciplePlusInterest = currentPrincipleRemaining + loanPayment.monthInterest;
@@ -168,7 +193,7 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 			//loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
 			console.log("Bumping up to $50 minimum payment. principle+interest=" + loanPayment.monthPrinciplePlusInterest);
 		}
-	}
+	}*/
 	
 	//Find the principle expected payment this month
 	loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
@@ -178,7 +203,7 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 		loanPayment.monthMinimumPayment = 0;
 		//TODO: This assumes a subsidized loan. Not all loans are subsidized. See https://studentaid.ed.gov/sa/repay-loans/deferment-forbearance
 		loanPayment.monthPrinciple = 0; 
-		loanPayment.monthInterest = 0; // <-- TODO: SUBSIDIZED ONLY!!!! Interest should accumulate on an unsibsidized loan
+		loanPayment.monthInterest = 0; // <-- TODO: SUBSIDIZED ONLY!!!! Interest should accumulate on an unsubsidized loan
 		loanPayment.monthPrinciplePlusInterest = loanPayment.monthInterest;
 		console.log("deferred. principle=" + loanPayment.monthPrinciple);
 	} else if(paymentPlan === "standard") {

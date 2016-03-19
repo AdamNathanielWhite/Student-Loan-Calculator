@@ -171,7 +171,7 @@ function displayFuture(future) {
 	console.log("Payoff MM/YYYY is " + payoffDateString);
 	
 	// Output the payment
-	var totalMonthlyPayment = future.information.totalInitialMonthlyPayment + future.information.beginningExtraPayment;
+	var totalMonthlyPayment = future.information.totalInitialMonthlyPayment + future.information.beginningExtraPayment + future.information.extraMonthlyAmountToReachMinimums;
 	var stringPayments = "Your monthly payments are $" + totalMonthlyPayment.toFixed(2);
 	//TODO: Allow the payment to vary over time
 	/*// Find the max and min payment amounts
