@@ -120,28 +120,41 @@ function playScenario() {
 			
 			console.log("Pushing new month-loan " + JSON.stringify(currentMonthLoan, null, 2));
 			future.loans[j].month.push(currentMonthLoan);
-			var paidDownPrincipleAmount = currentMonthLoan.beginningPrincipleAmount - currentMonthLoan.monthPrinciple - currentMonthLoan.monthExtraPayment;
-			future.loans[j].nextPrinciple = paidDownPrincipleAmount;
-			totalAmountSpentThisMonth += paidDownPrincipleAmount;
+			var nextPrinciple = currentMonthLoan.beginningPrincipleAmount - currentMonthLoan.monthPrinciple - currentMonthLoan.monthExtraPayment;
+			console.log("paid down principle amount is " + nextPrinciple + " = " + currentMonthLoan.beginningPrincipleAmount + " - " + currentMonthLoan.monthPrinciple + " - " + currentMonthLoan.monthExtraPayment)
+			future.loans[j].nextPrinciple = nextPrinciple;
+			totalAmountSpentThisMonth += currentMonthLoan.monthPrinciplePlusInterest + currentMonthLoan.monthExtraPayment; //extra should be zero
 		}
 		
-		/*//Pay extra on loan
+		//Pay extra on loan
 		if(monthNum === 0) { //initially set this
-			future.information.totalCombinedMonthlyPayment = totalAmountSpentThisMonth + future.information.beginningExtraPayment;
+			future.information.totalCombinedMonthlyPayment = Number(totalAmountSpentThisMonth) + Number(future.information.beginningExtraPayment);
 		}
-		var extraMoney = future.information.beginningExtraPayment - totalAmountSpentThisMonth;
-		if( future.loans.length > 0) { 
+		var extraMoney = future.information.totalCombinedMonthlyPayment - totalAmountSpentThisMonth;
+		console.log("extra money at end of month is " + extraMoney + " = " + future.information.totalCombinedMonthlyPayment + " - " + totalAmountSpentThisMonth);
+		if( future.loans.length > 0 && extraMoney > 0) { 
 			var worstLoanIndex = getWorstLoanIndex(future.loans, scenario);
-			var worstLoanMonth = future.loans[worstLoanIndex].month[future.loans[worstLoanIndex].month.length-1];
+			var worstLoanMonth = future.loans[worstLoanIndex].month[monthNum];
 			console.log("worst loan month is " + JSON.stringify(worstLoanMonth, null, 2));
-			var principleRemaining = worstLoanMonth.beginningPrinciple - worstLoanMonth.monthPrinciple; 
+			var principleRemaining = worstLoanMonth.beginningPrincipleAmount - worstLoanMonth.monthPrinciple;
+			console.log("principleRemaining = " + principleRemaining + " = " + worstLoanMonth.beginningPrincipleAmount + " - " + worstLoanMonth.monthPrinciple);
+			
+			//check for rounding errors
+			if (principleRemaining < 0.009 ) {
+				principleRemaining = 0;
+				console.log("In worst payment, rounded the principle remaining on this loan to zero.");
+			}
+			
+			//Pay down the principle
+			console.log("if (principle remaining = " + principleRemaining + " > " + extraMoney + " = extraMoney )");
 			if( principleRemaining > extraMoney) {
 				worstLoanMonth.monthExtraPayment = extraMoney; 
 			} else { //only a small amount remaining
-				worstLoanMonth.monthExtraPayment = principleRemaining; //math wrong?? worstLoanMonth.monthPrinciple - worstLoanMonth.beginningPrinciple;
+				worstLoanMonth.monthExtraPayment = principleRemaining; //math wrong?? worstLoanMonth.monthPrincipleAmount - worstLoanMonth.beginningPrinciple;
+				console.log("There is only a small amount remaining, $" + worstLoanMonth.monthExtraPayment + " We're paying off the entirety now, even though we have " + extraMoney + " available to spend.");
 			}
 			console.log("The worst loan is loan# " + worstLoanIndex + " We paid $" + worstLoanMonth.monthExtraPayment + " to the loan, and the principle is now " + (principleRemaining - worstLoanMonth.monthExtraPayment));
-		}*/
+		}
 		
 		//Set up the principle amount for the next month
 		for(var j=0; j<future.loans.length; j++) {
@@ -160,6 +173,9 @@ function playScenario() {
 		console.log(future);
 		console.log("Intermediate future after month " + monthNum + " is " + JSON.stringify(future, null, 2));
 		monthNum += 1;
+
+		//debugging, only see first few months:
+		//if(monthNum >= 3) {break;}
 	}
 			
 	console.log("Complete future is " + JSON.stringify(future, null, 2));

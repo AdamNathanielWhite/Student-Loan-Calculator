@@ -171,7 +171,9 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 	
 	if(defermentMonthsRemainingCountdown > 0) { //Deferment
 		loanPayment.monthMinimumPayment = 0;
-		loanPayment.monthPrinciple = 0; //TODO: This assumes a subsidized loan. Not all loans are subsidized. See https://studentaid.ed.gov/sa/repay-loans/deferment-forbearance
+		//TODO: This assumes a subsidized loan. Not all loans are subsidized. See https://studentaid.ed.gov/sa/repay-loans/deferment-forbearance
+		loanPayment.monthPrinciple = 0; 
+		loanPayment.monthInterest = 0; // <-- TODO: SUBSIDIZED ONLY!!!! Interest should accumulate on an unsibsidized loan
 		loanPayment.monthPrinciplePlusInterest = loanPayment.monthInterest;
 		console.log("deferred. principle=" + loanPayment.monthPrinciple);
 	} else if(paymentPlan === "standard") {
