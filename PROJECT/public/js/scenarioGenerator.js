@@ -29,38 +29,43 @@ function evaluateAll(scenario) {
 
 //The 'worst' loan is the one that the user should pay down next
 function getWorstLoanIndex(loans, scenario) {
-	console.log("getWorstLoanIndex() is BROKED!! This needs to be changed to reflect the new loan month json");
-	return 0;
-	//BROKED!! This needs to be changed to reflect the new loan month json
 	//console.log("getWorstLoanIndex()");
 	var worstLoanIndex = 0;
 	
-	if(scenario.payoffOrder == "avalanche") {
-		//console.log("avalanche");
+	//avalanche. pay down the largest rate first
+	if(scenario.payOffOrder == "avalanche") { 
 		var worstLoanRate = 0;
 		for(var i=0; i<loans.length; i++) {
-			var principleRemaining = loans[i].monthlyAmounts[loans[i].monthlyAmounts.length-1].principleRemaining;
-			if( principleRemaining > 0) {
+			var principleRemaining = loans[i].month[loans[i].month.length-1].beginningPrincipleAmount;
+			if( principleRemaining > 0.009) {
 				if( loans[i].rate > worstLoanRate ) {
 					worstLoanRate = loans[i].rate;
 					worstLoanIndex = i;
+					//alert("worstLoanIndex is now" + worstLoanIndex);
 				}
 			}
+			//alert("principleRemaining=" + principleRemaining + " worstLoanRate=" + worstLoanRate + " i=" + i + " worstLoanIndex=" + worstLoanIndex);
 		}
-	} else { //snowball. find the smallest payment
-		//console.log("snowball");
+		console.log("avalanche. worst loan rate is " + worstLoanRate);
+	}	
+	
+	//snowball. pay down the smallest remaining principle first
+	else {
 		var worstLoanAmount = 999999999;
 		for(var i=0; i<loans.length; i++) {
-			var principleRemaining = loans[i].monthlyAmounts[loans[i].monthlyAmounts.length-1].principleRemaining;
-			if( principleRemaining > 0) {
-				var currentMonth = loans[i].monthlyAmounts[loans[i].monthlyAmounts.length-1];
-				var currentMonthlyPayment = (currentMonth.interestPayment + currentMonth.principlePayment);
-				if( (currentMonthlyPayment < worstLoanAmount) && (currentMonthlyPayment != 0)) {
-					worstLoanAmount = currentMonthlyPayment;
+			var principleRemaining = loans[i].month[loans[i].month.length-1].beginningPrincipleAmount;
+			if( principleRemaining > 0.009) {
+				var currentMonth = loans[i].month[loans[i].month.length-1];
+				var currentPrinciple = (currentMonth.monthInterest + currentMonth.monthPrinciple);
+				if( (currentPrinciple < worstLoanAmount) && (currentPrinciple > 0)) {
+					worstLoanAmount = currentPrinciple;
 					worstLoanIndex = i;
+					//alert("worstLoanIndex is now" + worstLoanIndex);
 				}
 			}
+			//alert("principleRemaining=" + principleRemaining + " worstLoanAmount=" + worstLoanAmount + " i=" + i + " worstLoanIndex=" + worstLoanIndex);
 		}
+		console.log("snowball. worst loan amount is " + worstLoanAmount);
 	}
 	console.log("getWorstLoanIndex() is returning worst loan# " + worstLoanIndex);
 	return worstLoanIndex;

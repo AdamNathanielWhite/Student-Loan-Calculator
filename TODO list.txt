@@ -1,9 +1,12 @@
 TODO for Student Loan Calculator
 
 CODE
-1. Refactor - extra payments
-2. Different repayment plans, besides standard
-3. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+1. (skip) getWorstLoanIndex. build a test bench. Why is the total of payments not changing sometimes?
+2. (skip) extra payments. If getWorstLoanIndex does not have a bug, then the bug is in the extra payments. 
+3. What does the $50 minimum apply to? Per loan, or total?? (research)
+4. remove loan from list when edit button is clicked. Update future.
+5. Different repayment plans, besides standard
+6. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
 
 OTHER
 1. (short on time) Print data into a table
