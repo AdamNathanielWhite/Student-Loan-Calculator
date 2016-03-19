@@ -1,0 +1,10 @@
+TODO for Student Loan Calculator
+
+CODE
+1. Refactor - extra payments
+2. Different repayment plans, besides standard
+3. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+
+OTHER
+1. (short on time) Print data into a table
+2. Graphs, possibly using R Shiny

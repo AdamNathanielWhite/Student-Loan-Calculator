@@ -113,6 +113,11 @@ function playScenario() {
 			var currentLoan = future.loans[j];
 			var currentMonthLoan = getLoanPaymentInformation(currentLoan.nextPrinciple, currentLoan.rate, (future.information.totalMonthsInPaymentPlan - monthNum), 
 					scenario.plan, scenario.discretionaryIncome, defermentMonthsRemainingCountdown);
+			
+			//Decrement deferment months
+			console.log("deferment months remaining is " + defermentMonthsRemainingCountdown);
+			defermentMonthsRemainingCountdown -= 1; //decrement
+			
 			console.log("Pushing new month-loan " + JSON.stringify(currentMonthLoan, null, 2));
 			future.loans[j].month.push(currentMonthLoan);
 			var paidDownPrincipleAmount = currentMonthLoan.beginningPrincipleAmount - currentMonthLoan.monthPrinciple - currentMonthLoan.monthExtraPayment;
