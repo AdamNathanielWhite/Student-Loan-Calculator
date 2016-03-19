@@ -64,21 +64,21 @@ function getDiscretionaryIncome(income, state/*, householdSize*/) {
 document.getElementById("submitButton").addEventListener("click", function() {
 	//Pull input values from the html document 
 	var plan = document.getElementById("planType").value;
-	var completedMonth = document.getElementById("completedMonth").value;
-	var completedYear = document.getElementById("completedYear").value;
+	var completedMonth = Number(document.getElementById("completedMonth").value);
+	var completedYear = Number(document.getElementById("completedYear").value);
 	var defermentBool = document.getElementById("defermentCheck").checked;
-	var defermentMonth = document.getElementById("defermentMonth").value;
-	var defermentYear = document.getElementById("defermentYear").value;
-	var income = document.getElementById("income").value;
+	var defermentMonth = Number(document.getElementById("defermentMonth").value);
+	var defermentYear = Number(document.getElementById("defermentYear").value);
+	var income = Number(document.getElementById("income").value);
 	var stateResidency = document.getElementById("stateResidency").value;
 	var forgivenessCheckbox = document.getElementById("forgivenessCheckbox").checked;
-	var forgivenessYears = document.getElementById("forgivenessYears").value;
+	var forgivenessYears = Number(document.getElementById("forgivenessYears").value);
 	var extraPaymentOption = document.querySelector('input[name="extraPaymentGroup"]:checked').value; //See http://stackoverflow.com/a/15839451/2312949
-	var extraMonthlyPaymentAmount = document.getElementById("extraMonthlyPaymentAmount").value;
+	var extraMonthlyPaymentAmount = Number(document.getElementById("extraMonthlyPaymentAmount").value);
 	var refinanceCheckbox = "false"; //document.getElementById("refinanceCheckbox").checked;
-	var refinanceAmount = 0; //document.getElementById("refinanceAmount").value;
-	var nYearsRefinance = 0; //document.getElementById("nYearsRefinance").value;
-	var refinanceInterestRate = 0; //document.getElementById("refinanceInterestRate").value;
+	var refinanceAmount = 0; //Number(document.getElementById("refinanceAmount").value);
+	var nYearsRefinance = 0; //Number(document.getElementById("nYearsRefinance").value);
+	var refinanceInterestRate = 0; //Number(document.getElementById("refinanceInterestRate").value);
 	var usingAutopay = document.getElementById("usingAutopay").checked;
 	var payOffOrder = document.getElementById("payOffOrder").value;
 	var newRepaymentPlan = "standard"; //document.getElementById("newRepaymentPlan").value;
