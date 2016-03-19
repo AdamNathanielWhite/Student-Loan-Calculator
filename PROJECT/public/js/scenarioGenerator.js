@@ -192,10 +192,10 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 		//TODO: Payment plan
 		console.log("TODO");
 	} else {
-		console.log("ERROR: The payment plan was not in the list");
+		console.log("ERROR: The payment plan was not in the list. string is " + paymentPlan);
 	}
 	
-	console.log("getLoanExpectedPaymentOnPlan() Based on the inputs: " + 
+	console.log("getLoanPaymentInformation() Based on the inputs: " + 
 			"\ncurrentPrincipleRemaining=" + currentPrincipleRemaining + 
 			"\n interestRate=" + interestRate + 
 			"\n monthsRemaining=" + monthsRemaining + 

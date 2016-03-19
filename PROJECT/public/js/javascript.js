@@ -156,6 +156,7 @@ function displayFuture(future) {
 			}
 		}
 	}
+	finalPayoffMonthNum += 1; //correct an off-by-one error
 	console.log("The last month of payments is month number " + finalPayoffMonthNum);
 	console.log("The total sum of payments is " + totalSumOfPayments);
 	
@@ -170,7 +171,8 @@ function displayFuture(future) {
 	console.log("Payoff MM/YYYY is " + payoffDateString);
 	
 	// Output the payment
-	var stringPayments = "Your monthly payments are $" + future.information.totalCombinedMonthlyPayment.toFixed(2);
+	var totalMonthlyPayment = future.information.totalInitialMonthlyPayment + future.information.beginningExtraPayment;
+	var stringPayments = "Your monthly payments are $" + totalMonthlyPayment.toFixed(2);
 	//TODO: Allow the payment to vary over time
 	/*// Find the max and min payment amounts
 	var highestPayment = 50;

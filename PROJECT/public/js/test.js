@@ -44,9 +44,9 @@ testCombinedMinimumPayment();
 */
 
 /*function testGetLoanPaymentInformation() {
-	var currentPrincipleRemaining = 1000;
+	var currentPrincipleRemaining = 10000;
 	var interestRate = 4;
-	var monthsRemaining = 120;
+	var monthsRemaining = 1;
 	var paymentPlan = "standard";
 	var discretionaryIncome = 20000;
 	var defermentBool = false;
