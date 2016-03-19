@@ -3,10 +3,9 @@ TODO for Student Loan Calculator
 CODE
 1. (skip) getWorstLoanIndex. build a test bench. Why is the total of payments not changing sometimes?
 2. (skip) extra payments. If getWorstLoanIndex does not have a bug, then the bug is in the extra payments. 
-2. Add loan before clicking submit. NaN shows up.
 3. Different repayment plans, besides standard. 
-4. remove loan from list when edit button is clicked. Update future.
-5. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+4. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+5. career forgiveness
 
 OTHER
 1. (short on time) Print data into a table

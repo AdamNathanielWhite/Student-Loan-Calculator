@@ -46,6 +46,7 @@ function displayLoans() {
 				listLoans.splice(deleteIndex, deleteIndex);
 			}
 			displayLoans();
+			playScenario();
 		}, false);
 	}
 }

@@ -195,7 +195,9 @@ function displayFuture(future) {
 	
 	
 	//don't let the user see null data
-	if(totalSumOfPayments === 0) {
+	if(totalSumOfPayments === 0 || totalMonthlyPayment === 0 ||
+			isNaN(totalSumOfPayments) || isNaN(totalMonthlyPayment) ) {
+		document.getElementById("futureResults").setAttribute("hidden", true);
 		return;
 	}
 	
