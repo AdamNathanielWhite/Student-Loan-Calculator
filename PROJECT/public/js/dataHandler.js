@@ -184,6 +184,12 @@ function playScenario() {
 			if( nextMonthPrincipleRemaining > 0 ) {
 				allPaidOff = false;
 			}
+			
+			//Are the loans forgiven?
+			if(scenario.forgivenessYears * 12 <= monthNum+2 && scenario.forgivenessCheckbox === "true") {
+				console.log("The loans are forgiven. Former principle was " + future.loans[j].nextPrinciple);
+				future.loans[j].nextPrinciple = 0;
+			}
 		}
 		
 		console.log(future);

@@ -92,7 +92,6 @@ function getExpectedMinimumTotalPayment(plan) {
 		console.log("TODO");
 	} else {
 		console.log("ERROR: The payment plan was not in the list. string is " + plan);
-		return 50;
 	}
 }
 

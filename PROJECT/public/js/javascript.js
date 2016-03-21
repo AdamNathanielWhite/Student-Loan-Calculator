@@ -16,6 +16,7 @@ document.getElementById("forgivenessCheckbox").addEventListener("click", functio
 		document.getElementById("loanForgivenessHiddenInput").hidden = true;
 		document.getElementById("loanForgivenessHiddenInputInverse").hidden = false;
 	}
+	//alert(document.getElementById("forgivenessCheckbox").checked);
 }, false);
 
 
