@@ -44,23 +44,36 @@ document.getElementById("submitLoanButton").addEventListener("click", function()
 
 /* --- UPDATING AND SUBMITTING INPUTS --- */
 // submitButton sends all inputs to the dataHandler 
-function getDiscretionaryIncome(income, state/*, householdSize*/) {
+var povertyThresholds150Percent = {
+		"Lower48": [0, 16755, 22695, 28635, 34575, 40515, 46455, 52395, 38335], 
+		"Alaska": [0, 13970, 18920, 23870, 28820, 33770, 38720, 43670, 48620], 
+		"Hawaii": [0, 12860, 17410, 21960, 26510, 31060, 35610, 40160, 44710]};
+function getPaymentsBasedOnDiscretionaryIncome(income, state, householdSize, percentageOfDiscretionaryIncome) {
 	if (income === "" || typeof(Number(income)) !== "number" || income < 0 ) {
 		//Non-essential input, don't require it. Set to maximum instead.
 		income = 100000;
 	}
 	income = Number(income);
 	
-	var discretionaryIncome = income;
-	if(state == "Hawaii" || state == "Alaska") {
-		//TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
-		//Alaska/Hawaii information - https://aspe.hhs.gov/poverty-guidelines
-		console.log("TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/");
+	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+	var personalPovertyThreshold150Percent = 100000;
+	if(state == "Hawaii") {
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Hawaii[householdSize];
+		console.log("Hawaii selected for poverty level data");
+	} else if ( state == "Alaska" ) {
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Alaska[householdSize];
+		console.log("Alaska selected for poverty level data");
 	} else { //lower 48
-		//TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
-		console.log("TODO: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/");
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Lower48[householdSize];
+		console.log("Lower 48 selected for poverty level data");
 	}
-	return discretionaryIncome;
+	
+	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+	var monthlyPoverty150 = personalPovertyThreshold150Percent / 12;
+	var monthlyIncome = income / 12;
+	var monthlyDiscretionaryIncome = monthlyIncome - monthlyPoverty150;
+	var monthlyPayment = monthlyDiscretionaryIncome * ( percentageOfDiscretionaryIncome / 100);
+	return monthlyPayment;
 }
 document.getElementById("submitButton").addEventListener("click", function() {
 	//Pull input values from the html document 
@@ -72,6 +85,7 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var defermentYear = Number(document.getElementById("defermentYear").value);
 	var income = Number(document.getElementById("income").value);
 	var stateResidency = document.getElementById("stateResidency").value;
+	var householdSize = document.getElementById("householdSize").value;
 	var forgivenessCheckbox = document.getElementById("forgivenessCheckbox").checked;
 	var forgivenessYears = Number(document.getElementById("forgivenessYears").value);
 	var extraPaymentOption = document.querySelector('input[name="extraPaymentGroup"]:checked').value; //See http://stackoverflow.com/a/15839451/2312949
@@ -85,6 +99,10 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var newRepaymentPlan = "standard"; //document.getElementById("newRepaymentPlan").value;
 
 	//TODO: Check these inputs. no negative numbers, text in numbers, blank, etc.
+	
+	//Payments based on discretionary income
+	var paymentsAt10PercentDiscretionaryIncome = getPaymentsBasedOnDiscretionaryIncome(income, stateResidency, householdSize, 10);
+	var paymentsAt15PercentDiscretionaryIncome = getPaymentsBasedOnDiscretionaryIncome(income, stateResidency, householdSize, 15);
 	
 	// Extra payment
 	if(extraPaymentOption == "extraPaymentNone") {
@@ -121,7 +139,8 @@ document.getElementById("submitButton").addEventListener("click", function() {
 		"defermentMonth": "' + defermentMonth +'", \
 		"defermentYear": "' + defermentYear + '", \
 		"income": "' + income + '", \
-		"discretionaryIncome": "' + getDiscretionaryIncome(income) + '", \
+		"paymentsAt10PercentDiscretionaryIncome": "' + paymentsAt10PercentDiscretionaryIncome + '", \
+		"paymentsAt15PercentDiscretionaryIncome": "' + paymentsAt15PercentDiscretionaryIncome + '", \
 		"stateResidency": "' + stateResidency + '", \
 		"forgivenessCheckbox": "' + forgivenessCheckbox + '", \
 		"forgivenessYears": "' + forgivenessYears + '", \

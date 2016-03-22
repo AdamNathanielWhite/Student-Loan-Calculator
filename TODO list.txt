@@ -3,8 +3,10 @@ TODO for Student Loan Calculator
 CODE
 1. (skip) getWorstLoanIndex. build a test bench. Why is the total of payments not changing sometimes?
 2. (skip) extra payments. If getWorstLoanIndex does not have a bug, then the bug is in the extra payments. 
-3. Different repayment plans, besides standard. 
-4. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+3. getLoanPaymentInformation has todos. Probably erase that section of code? More testing..
+4. Different repayment plans, besides standard. 
+5. Deferment - subsidized vs unsubsidized. Add a checkbox for each loan. See scenarioGenerator.js --> getLoanPaymentInformation --> deferment
+6. (bug) Input finish date 20 years into the future. standard payment is calculated from the wrong date. 
 
 OTHER
 1. (short on time) Print data into a table

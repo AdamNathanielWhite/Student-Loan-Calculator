@@ -72,26 +72,39 @@ function getWorstLoanIndex(loans, scenario) {
 }
 
 // Determine the minimum allowed amount under the user's plan
-function getExpectedMinimumTotalPayment(plan) {
+function getExpectedMinimumTotalPayment(plan, paymentsAt10PercentDiscretionaryIncome, paymentsAt15PercentDiscretionaryIncome) {
 	
-	//SEE THIS WEBSITE FOR MINIMUMS PER PLAN: http://www.finaid.org/loans/repayment.phtml
+	//SEE THESE WEBSITES FOR INFORMATION ON EACH PLAN: 
+	//http://www.finaid.org/loans/repayment.phtml
+	//https://studentaid.ed.gov/sa/repay-loans/understand/plans/income-driven#monthly-payments
+	
+	var standardPayment = 0;
+	for(var i; i<future.loans.length; i++) {
+		var loan = future.loans[i];
+		var ratePerMonthlyPeriod = (future.loans[i].rate / 100) / 12;
+		standardPayment +=loanPayment.monthPrinciplePlusInterest = future.loans[i].startingAmount / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), monthsRemaining)))/ratePerMonthlyPeriod);
+	}
+	standardPayment = Math.max(standardPayment, 50);
+	console.log("The standard payment is " + standardPayment);
 	
 	if(plan === "standard") {
-		return 50;
+		return standardPayment;
 	} else if(plan === "ibr") {
-		//TODO: Minimum
-		console.log("TODO");
+		return Math.min( paymentsAt15PercentDiscretionaryIncome, standardPayment);
 	} else if(plan === "icr") {
-		//TODO: Minimum
-		console.log("TODO");
+		var twelveYearStandard = 0;
+		for(var i; i<future.loans.length; i++) {
+			var ratePerMonthlyPeriod = (future.loans[i].rate / 100) / 12;
+			twelveYearStandard += future.loans[i].startingAmount / ((1-(1/Math.pow((1+ratePerMonthlyPeriod), 144)))/ratePerMonthlyPeriod);
+		}
+		return Math.min( (paymentsAt10PercentDiscretionaryIncome * 2), twelveYearStandard);
 	} else if(plan === "paye") {
-		//TODO: Minimum
-		console.log("TODO");
+		return Math.min(paymentsAt10PercentDiscretionaryIncome, standardPayment);
 	} else if(plan === "repaye") {
-		//TODO: Minimum
-		console.log("TODO");
+		return paymentsAt10PercentDiscretionaryIncome;
 	} else {
 		console.log("ERROR: The payment plan was not in the list. string is " + plan);
+		return standardPayment;
 	}
 }
 
@@ -154,7 +167,8 @@ function getLoanPrincipleMinimumPayment(currentPrincipleRemaining, monthsRemaini
 	
 	return principlePayment;
 }*/
-function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentMonthsRemainingCountdown) {
+function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, defermentMonthsRemainingCountdown) {
+	
 	var loanPayment = {"beginningPrincipleAmount": currentPrincipleRemaining, "monthPrinciplePlusInterest": 0, "monthPrinciple": 0, "monthInterest": 0, 
 			"monthMinimumPayment": 0, "monthExtraPayment": 0};
 	
@@ -197,10 +211,14 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 	//Find the principle expected payment this month
 	loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
 	console.log("principle=" + loanPayment.monthPrinciple);
+
+	//SEE THESE WEBSITES FOR INFORMATION ON EACH PLAN: 
+	//http://www.finaid.org/loans/repayment.phtml
+	//https://studentaid.ed.gov/sa/repay-loans/understand/plans/income-driven#monthly-payments
 	
 	if(defermentMonthsRemainingCountdown > 0) { //Deferment
 		loanPayment.monthMinimumPayment = 0;
-		//TODO: This assumes a subsidized loan. Not all loans are subsidized. See https://studentaid.ed.gov/sa/repay-loans/deferment-forbearance
+		//TODO: This assumes a subsidized loan. Not all loans are subsidized.
 		loanPayment.monthPrinciple = 0; 
 		loanPayment.monthInterest = 0; // <-- TODO: SUBSIDIZED ONLY!!!! Interest should accumulate on an unsubsidized loan
 		loanPayment.monthPrinciplePlusInterest = loanPayment.monthInterest;
@@ -229,7 +247,6 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 			"\n interestRate=" + interestRate + 
 			"\n monthsRemaining=" + monthsRemaining + 
 			"\n paymentPlan=" + paymentPlan + 
-			"\n discretionaryIncome=" + discretionaryIncome + 
 			"\n defermentMonthsRemainingCountdown=" + defermentMonthsRemainingCountdown + 
 			"\n The monthly output is: \n" + JSON.stringify(loanPayment, null, 2));
 	return loanPayment;

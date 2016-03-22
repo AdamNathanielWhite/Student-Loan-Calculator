@@ -95,13 +95,13 @@ function playScenario() {
 		
 		//find the initial payment
 		var beginningExpectedPaymentLoan = getLoanPaymentInformation(newLoan.startingAmount, newLoan.rate, future.information.totalMonthsInPaymentPlan, 
-				scenario.plan, scenario.discretionaryIncome, 0).monthPrinciplePlusInterest;
+				scenario.plan, 0).monthPrinciplePlusInterest;
 		future.information.totalInitialMonthlyPayment += beginningExpectedPaymentLoan;
 		future.information.totalInitialPrinciple += newLoan.startingAmount;
 	}
 	
 	//Enforce the minimum payment here.
-	var expectedMinimumTotalPayment = getExpectedMinimumTotalPayment(scenario.plan); 
+	var expectedMinimumTotalPayment = getExpectedMinimumTotalPayment(scenario.plan, scenario.paymentsAt10PercentDiscretionaryIncome, scenario.paymentsAt15PercentDiscretionaryIncome); 
 	if( future.information.totalInitialMonthlyPayment < expectedMinimumTotalPayment) {
 		future.information.extraMonthlyAmountToReachMinimums = expectedMinimumTotalPayment - future.information.totalInitialMonthlyPayment;
 		console.log("We need to add " + future.information.extraMonthlyAmountToReachMinimums + " in order to reach the minimum required payment of " + expectedMinimumTotalPayment);
@@ -130,7 +130,7 @@ function playScenario() {
 		for(var j=0; j<future.loans.length; j++) {
 			var currentLoan = future.loans[j];
 			var currentMonthLoan = getLoanPaymentInformation(currentLoan.nextPrinciple, currentLoan.rate, (future.information.totalMonthsInPaymentPlan - monthNum), 
-					scenario.plan, scenario.discretionaryIncome, defermentMonthsRemainingCountdown);		
+					scenario.plan, defermentMonthsRemainingCountdown);		
 
 			
 			console.log("Pushing new month-loan " + JSON.stringify(currentMonthLoan, null, 2));

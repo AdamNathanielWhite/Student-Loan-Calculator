@@ -124,6 +124,9 @@ html, body{
 .textInput {
 	width: 45px;
 }
+.largerTextInput {
+	width: 60px;
+}
 .missing-required-input {
 	border-color: #cc0000;
 }
