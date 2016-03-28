@@ -81,7 +81,7 @@ function getExpectedMinimumTotalPayment(plan, paymentsAt10PercentDiscretionaryIn
 	}
 }
 
-function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, defermentMonthsRemainingCountdown) {
+function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, defermentMonthsRemainingCountdown, subsidizedInDefermentBool) {
 	
 	var loanPayment = {"beginningPrincipleAmount": currentPrincipleRemaining, "monthPrinciplePlusInterest": 0, "monthPrinciple": 0, "monthInterest": 0, 
 			"monthMinimumPayment": 0, "monthExtraPayment": 0};
@@ -109,6 +109,14 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 	//var irf = ratePerMonthlyPeriod / 365.25;
 	loanPayment.monthInterest = currentPrincipleRemaining * ratePerMonthlyPeriod;
 	
+	//is the loan in deferment and subsidized?
+	if(subsidizedInDefermentBool && defermentMonthsRemainingCountdown > 0) {
+		loanPayment.monthPrinciplePlusInterest = 0;
+		loanPayment.monthPrinciple = 0;
+		loanPayment.monthInterest = 0; 
+		loanPayment.monthMinimumPayment = 0;
+	}
+	
 	//Find the principle expected payment this month
 	loanPayment.monthPrinciple = loanPayment.monthPrinciplePlusInterest - loanPayment.monthInterest;
 	console.log("principle=" + loanPayment.monthPrinciple);
@@ -119,6 +127,7 @@ function getLoanPaymentInformation(currentPrincipleRemaining, interestRate, mont
 			"\n monthsRemaining=" + monthsRemaining + 
 			"\n paymentPlan=" + paymentPlan + 
 			"\n defermentMonthsRemainingCountdown=" + defermentMonthsRemainingCountdown + 
+			"\n subsidizedInDefermentBool=" + subsidizedInDefermentBool +
 			"\n The monthly output is: \n" + JSON.stringify(loanPayment, null, 2));
 	return loanPayment;
 }

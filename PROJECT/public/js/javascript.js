@@ -26,6 +26,7 @@ document.getElementById("submitLoanButton").addEventListener("click", function()
 	// Create loan object and add it to the data structure list of loans
 	var newLoanAmount = Number(document.getElementById("loanAmountInput").value);
 	var newLoanRate = Number(document.getElementById("interestRateInput").value);
+	var subsidizedBool = document.getElementById("subsidizedCheck").checked;
 	
 	//Sanitize inputs
 	console.log("typeof newLoanAmount is " + typeof(newLoanAmount));
@@ -38,7 +39,8 @@ document.getElementById("submitLoanButton").addEventListener("click", function()
 		newLoanRate = 0;
 	}
 	
-	addLoan(newLoanAmount, newLoanRate); 
+	
+	addLoan(newLoanAmount, newLoanRate, subsidizedBool); 
 }, false);
 
 

@@ -106,7 +106,12 @@ html, body{
 	width: 30%;
 }
 .interest-rate-column {
-	margin-left: 10%;
+	margin-left: 0%;
+	float: left;
+	width: 30%;
+}
+.subsidized-checkbox {
+	/*margin-left: 15%;*/
 }
 .add-edit-loan-button {
 	float: right;

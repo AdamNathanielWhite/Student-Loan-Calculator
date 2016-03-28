@@ -21,6 +21,10 @@ function displayLoans() {
 	
 	//insert a dom element to display the new loan
 	for( var loanIndex = 0; loanIndex < listLoans.length; loanIndex++ ) { 
+		var subsidizedText = "Subsidized";
+		if( ! listLoans[loanIndex].subsidizedBool) {
+			subsidizedText = "Unsubsidized";
+		}
 		//alert("for index " + loanIndex + " listLoans.length=" + listLoans.length);
 		var displayLoanRow = '<div id="displayLoan' + loanIndex + '" class="single-loan-row single-loan-row-locked"> \
 			<div class="horizontal-divs loan-amount"> \
@@ -30,6 +34,10 @@ function displayLoans() {
 	       	<div class="horizontal-divs interest-rate-column"> \
         		<output type="text" id="interestRate' + loanIndex + '" class="display-loan-output"></output> \
         		' + listLoans[loanIndex].rate + ' \
+        	</div> \
+        	<div class="horizontal-divs subsidized-checkbox"> \
+	        	<output type="text" name="subsidizedCheckOutput' + loanIndex + '" id="subsidizedCheckOutput"></output> \
+	        	' + subsidizedText + ' \
         	</div> \
         	<div class="horizontal-divs add-edit-loan-button"> \
         		<button type="button" id="editLoanButton' + loanIndex + '" name="editLoanButton' + loanIndex + '" class="user-input-rectangle loan-edit-button">Edit</button> \
@@ -52,8 +60,8 @@ function displayLoans() {
 }
 
 /* ADD NEW USERDATA */
-function addLoan(amount, rate) {
-	var newLoan = {'amount': amount, 'rate': rate};
+function addLoan(amount, rate, subsidizedBool) {
+	var newLoan = {'amount': amount, 'rate': rate, 'subsidizedBool': subsidizedBool};
 	console.log(newLoan);
 	listLoans.push(newLoan);
 	//console.log("listLoans[0].amount=" + listLoans[0].amount + "  listLoans[0].rate=" + listLoans[0].rate);
@@ -89,13 +97,12 @@ function playScenario() {
 			console.log("Autopay has saved 0.25%, and the new interest rate is " + interestRate);
 		}
 	
-		var newLoan = {"rate": interestRate, "startingAmount": listLoans[i].amount, "nextPrinciple": listLoans[i].amount, "month": []};
+		var newLoan = {"rate": interestRate, "subsidizedInDefermentBool": listLoans[i].subsidizedBool, "startingAmount": listLoans[i].amount, "nextPrinciple": listLoans[i].amount, "month": []};
 		console.log("New loan " + JSON.stringify(newLoan, null, 2));
 		future.loans.push(newLoan);
 		
 		//find the initial payment
-		var beginningExpectedPaymentLoan = getLoanPaymentInformation(newLoan.startingAmount, newLoan.rate, future.information.totalMonthsInPaymentPlan, 
-				scenario.plan, 0).monthPrinciplePlusInterest;
+		var beginningExpectedPaymentLoan = getLoanPaymentInformation(newLoan.startingAmount, newLoan.rate, future.information.totalMonthsInPaymentPlan, scenario.plan, 0, newLoan.subsidizedInDefermentBool ).monthPrinciplePlusInterest;
 		future.information.totalInitialMonthlyPayment += beginningExpectedPaymentLoan;
 		future.information.totalInitialPrinciple += newLoan.startingAmount;
 	}
@@ -130,7 +137,7 @@ function playScenario() {
 		for(var j=0; j<future.loans.length; j++) {
 			var currentLoan = future.loans[j];
 			var currentMonthLoan = getLoanPaymentInformation(currentLoan.nextPrinciple, currentLoan.rate, (future.information.totalMonthsInPaymentPlan - monthNum), 
-					scenario.plan, defermentMonthsRemainingCountdown);		
+					scenario.plan, defermentMonthsRemainingCountdown, currentLoan.subsidizedInDefermentBool);		
 
 			
 			console.log("Pushing new month-loan " + JSON.stringify(currentMonthLoan, null, 2));

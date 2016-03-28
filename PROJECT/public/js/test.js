@@ -50,10 +50,11 @@ testCombinedMinimumPayment();
 	var paymentPlan = "standard";
 	var discretionaryIncome = 20000;
 	var defermentBool = false;
+	var subsidizedInDefermentBool = false;
 	//console.log("testGetLoanPaymentInformation() Inputs are principle " + currentPrincipleRemaining + " interest rate " + interestRate + 
-	//		" months remaining " + monthsRemaining + " payment plan " + paymentPlan + " discretionary income " + discretionaryIncome);
+	//		" months remaining " + monthsRemaining + " payment plan " + paymentPlan + " discretionary income " + discretionaryIncome + " subsidizedInDefermentBool " + subsidizedInDefermentBool);
 	
-	var returnedInfo = getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentBool);
+	var returnedInfo = getLoanPaymentInformation(currentPrincipleRemaining, interestRate, monthsRemaining, paymentPlan, discretionaryIncome, defermentBool, subsidizedInDefermentBool);
 	
 	console.log("testGetLoanPaymentInformation() output is " + JSON.stringify(returnedInfo, null, 2));
 }
