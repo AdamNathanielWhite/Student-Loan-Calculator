@@ -8,7 +8,17 @@ console.log("javascript.js loaded");
 		document.getElementById("refinanceOptionDiv").hidden = true;
 	}
 }, false);*/
-document.getElementById("forgivenessCheckbox").addEventListener("click", function(){
+
+document.getElementById("planType").addEventListener("change", submitUpdate);
+document.getElementById("completedMonth").addEventListener("change", submitUpdate);
+document.getElementById("completedYear").addEventListener("change", submitUpdate);
+document.getElementById("defermentCheck").addEventListener("change", submitUpdate);
+document.getElementById("defermentMonth").addEventListener("change", submitUpdate);
+document.getElementById("defermentYear").addEventListener("change", submitUpdate);
+document.getElementById("income").addEventListener("change", submitUpdate);
+document.getElementById("stateResidency").addEventListener("change", submitUpdate);
+document.getElementById("householdSize").addEventListener("change", submitUpdate);
+document.getElementById("forgivenessCheckbox").addEventListener("change", function(){
 	if(document.getElementById("forgivenessCheckbox").checked) {
 		document.getElementById("loanForgivenessHiddenInput").hidden = false;
 		document.getElementById("loanForgivenessHiddenInputInverse").hidden = true;
@@ -17,67 +27,17 @@ document.getElementById("forgivenessCheckbox").addEventListener("click", functio
 		document.getElementById("loanForgivenessHiddenInputInverse").hidden = false;
 	}
 	//alert(document.getElementById("forgivenessCheckbox").checked);
+	
+	submitUpdate();
 }, false);
+document.getElementById("forgivenessYears").addEventListener("change", submitUpdate);
+document.getElementById("extraPaymentNone").addEventListener("change", submitUpdate);
+document.getElementById("extraPayment").addEventListener("change", submitUpdate);
+document.getElementById("usingAutopay").addEventListener("change", submitUpdate);
+document.getElementById("payOffOrder").addEventListener("change", submitUpdate);
+//document.getElementById("submitButton").addEventListener("click", submitUpdate, false);
 
-
-/* --- LOAN INPUT --- */
-document.getElementById("submitLoanButton").addEventListener("click", function(){
-	//alert("submitLoanButton event");
-	// Create loan object and add it to the data structure list of loans
-	var newLoanAmount = Number(document.getElementById("loanAmountInput").value);
-	var newLoanRate = Number(document.getElementById("interestRateInput").value);
-	var subsidizedBool = document.getElementById("subsidizedCheck").checked;
-	
-	//Sanitize inputs
-	console.log("typeof newLoanAmount is " + typeof(newLoanAmount));
-	if(typeof(newLoanAmount) !== "number" || newLoanAmount < 0 || isNaN(newLoanAmount)) {
-		console.log("Bad input newLoanAmount to new loan");
-		newLoanAmount = 0;
-	}
-	if(typeof(newLoanRate) !== "number" || newLoanRate < 0 || isNaN(newLoanRate)) {
-		console.log("Bad input newLoanRate to new loan");
-		newLoanRate = 0;
-	}
-	
-	
-	addLoan(newLoanAmount, newLoanRate, subsidizedBool); 
-}, false);
-
-
-/* --- UPDATING AND SUBMITTING INPUTS --- */
-// submitButton sends all inputs to the dataHandler 
-var povertyThresholds150Percent = {
-		"Lower48": [0, 16755, 22695, 28635, 34575, 40515, 46455, 52395, 38335], 
-		"Alaska": [0, 13970, 18920, 23870, 28820, 33770, 38720, 43670, 48620], 
-		"Hawaii": [0, 12860, 17410, 21960, 26510, 31060, 35610, 40160, 44710]};
-function getPaymentsBasedOnDiscretionaryIncome(income, state, householdSize, percentageOfDiscretionaryIncome) {
-	if (income === "" || typeof(Number(income)) !== "number" || income < 0 ) {
-		//Non-essential input, don't require it. Set to maximum instead.
-		income = 100000;
-	}
-	income = Number(income);
-	
-	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
-	var personalPovertyThreshold150Percent = 100000;
-	if(state == "Hawaii") {
-		personalPovertyThreshold150Percent = povertyThresholds150Percent.Hawaii[householdSize];
-		console.log("Hawaii selected for poverty level data");
-	} else if ( state == "Alaska" ) {
-		personalPovertyThreshold150Percent = povertyThresholds150Percent.Alaska[householdSize];
-		console.log("Alaska selected for poverty level data");
-	} else { //lower 48
-		personalPovertyThreshold150Percent = povertyThresholds150Percent.Lower48[householdSize];
-		console.log("Lower 48 selected for poverty level data");
-	}
-	
-	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
-	var monthlyPoverty150 = personalPovertyThreshold150Percent / 12;
-	var monthlyIncome = income / 12;
-	var monthlyDiscretionaryIncome = monthlyIncome - monthlyPoverty150;
-	var monthlyPayment = monthlyDiscretionaryIncome * ( percentageOfDiscretionaryIncome / 100);
-	return monthlyPayment;
-}
-document.getElementById("submitButton").addEventListener("click", function() {
+function submitUpdate() {
 	//Pull input values from the html document 
 	var plan = document.getElementById("planType").value;
 	var completedMonth = Number(document.getElementById("completedMonth").value);
@@ -106,6 +66,11 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	var paymentsAt10PercentDiscretionaryIncome = getPaymentsBasedOnDiscretionaryIncome(income, stateResidency, householdSize, 10);
 	var paymentsAt15PercentDiscretionaryIncome = getPaymentsBasedOnDiscretionaryIncome(income, stateResidency, householdSize, 15);
 	
+	//Forgiveness years
+	if ( forgivenessYears == 0 ) {
+		forgivenessYears = 10;
+	}
+	
 	// Extra payment
 	if(extraPaymentOption == "extraPaymentNone") {
 		extraMonthlyPaymentAmount = 0;
@@ -115,14 +80,14 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	//}
 	
 	//TODO: This is incorrect - http://clubmate.fi/javascript-adding-and-removing-class-names-from-elements/
-//	if( document.getElementById("forgivenessYears").hasClass(" missing-required-input ") ) { 
-//		//document.getElementById("forgivenessYears").removeClass(" missing-required-input "); 
-//	}
-//	if ( forgivenessCheckbox === true && (forgivenessYears == "" || typeof(Number(forgivenessYears)) !== "number" || forgivenessYears < 0)) {
-//		alert("if");
-//		document.getElementById("forgivenessYears").classList.add(" missing-required-input ");
-//		alert("added");
-//	}
+	//if( document.getElementById("forgivenessYears").hasClass(" missing-required-input ") ) { 
+	//	//document.getElementById("forgivenessYears").removeClass(" missing-required-input "); 
+	//}
+	//if ( forgivenessCheckbox === true && (forgivenessYears == "" || typeof(Number(forgivenessYears)) !== "number" || forgivenessYears < 0)) {
+	//	alert("if");
+	//	document.getElementById("forgivenessYears").classList.add(" missing-required-input ");
+	//	alert("added");
+	//}
 	
 	//Find the total number of months remaining on the plan
 	var differenceMonths = completedMonth - todaysMonth;
@@ -160,7 +125,67 @@ document.getElementById("submitButton").addEventListener("click", function() {
 	
 	//pass the json object into the data handler
 	addScenario(jsonInputScenario);
+}
+
+
+/* --- LOAN INPUT --- */
+document.getElementById("submitLoanButton").addEventListener("click", function(){
+	//alert("submitLoanButton event");
+	// Create loan object and add it to the data structure list of loans
+	var newLoanAmount = Number(document.getElementById("loanAmountInput").value);
+	var newLoanRate = Number(document.getElementById("interestRateInput").value);
+	var subsidizedBool = document.getElementById("subsidizedCheck").checked;
+	
+	//Sanitize inputs
+	console.log("typeof newLoanAmount is " + typeof(newLoanAmount));
+	if(typeof(newLoanAmount) !== "number" || newLoanAmount < 0 || isNaN(newLoanAmount)) {
+		console.log("Bad input newLoanAmount to new loan");
+		newLoanAmount = 0;
+	}
+	if(typeof(newLoanRate) !== "number" || newLoanRate < 0 || isNaN(newLoanRate)) {
+		console.log("Bad input newLoanRate to new loan");
+		newLoanRate = 0;
+	}
+	
+	
+	addLoan(newLoanAmount, newLoanRate, subsidizedBool); 
+	submitUpdate();
 }, false);
+
+
+/* --- UPDATING AND SUBMITTING INPUTS --- */
+// submitButton sends all inputs to the dataHandler 
+var povertyThresholds150Percent = {
+		"Lower48": [0, 16755, 22695, 28635, 34575, 40515, 46455, 52395, 38335], 
+		"Alaska": [0, 13970, 18920, 23870, 28820, 33770, 38720, 43670, 48620], 
+		"Hawaii": [0, 12860, 17410, 21960, 26510, 31060, 35610, 40160, 44710]};
+function getPaymentsBasedOnDiscretionaryIncome(income, state, householdSize, percentageOfDiscretionaryIncome) {
+	if (income === "" || typeof(Number(income)) !== "number" || income < 0 ) {
+		//Non-essential input, don't require it. Set to maximum instead.
+		income = 100000;
+	}
+	income = Number(income);
+	
+	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+	var personalPovertyThreshold150Percent = 100000;
+	if(state == "Hawaii") {
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Hawaii[householdSize];
+		console.log("Hawaii selected for poverty level data");
+	} else if ( state == "Alaska" ) {
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Alaska[householdSize];
+		console.log("Alaska selected for poverty level data");
+	} else { //lower 48
+		personalPovertyThreshold150Percent = povertyThresholds150Percent.Lower48[householdSize];
+		console.log("Lower 48 selected for poverty level data");
+	}
+	
+	//See: http://www.lendkey.com/studentloans/2013/11/05/how-do-i-calculate-my-ibr-payment/
+	var monthlyPoverty150 = personalPovertyThreshold150Percent / 12;
+	var monthlyIncome = income / 12;
+	var monthlyDiscretionaryIncome = monthlyIncome - monthlyPoverty150;
+	var monthlyPayment = monthlyDiscretionaryIncome * ( percentageOfDiscretionaryIncome / 100);
+	return monthlyPayment;
+}
 
 function displayFuture(future) {
 	//iterate through each loan and sum up all the payments
