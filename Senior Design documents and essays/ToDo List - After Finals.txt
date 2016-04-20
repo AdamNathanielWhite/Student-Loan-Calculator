@@ -1,0 +1,4 @@
+Add graphs. Dillon used the library "DiGraphs", which takes in a csv.
+"Completed on date" needs to tell the user the difference between 10 and 20 year plans. "(Note: the xyz plan lasts for 20 years)"
+Go through the code and resolve all the todos.
+Add a website counter. This would be in the server.js file.
